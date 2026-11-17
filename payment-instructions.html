@@ -37,7 +37,12 @@
       .method-tile { width: min(100%, 288px); min-height: 92px; display: flex; align-items: center; gap: 15px; padding: 15px 19px; background: #145360; color: #fff; }
       .method-icon { width: 43px; height: 43px; display: grid; place-items: center; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.1); }
       .method-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 1.5; }
-      .method-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+      .method-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+      .method-choice { width: min(100%, 300px); border: 0; text-align: left; cursor: pointer; }
+      .method-choice:hover { background: #103f49; }
+      .availability-caveat { margin: 8px 0 0; color: #777d79; font-size: 11px; line-height: 1.6; }
+      [hidden] { display: none !important; }
+      .method-title { display: block; font-size: 14px; font-weight: 600; line-height: 1.4; }
       .method-subtitle { margin-top: 2px; color: #d7e7e6; font-size: 12px; }
       .row { min-height: 55px; display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 14px; border-bottom: 1px solid #eeece8; }
       .label { color: #92938f; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; }
@@ -81,25 +86,16 @@
     </header>
     <main class="layout">
       <div class="left-column">
-        <section class="panel choice-panel" aria-labelledby="choice-title">
-          <h1 id="choice-title">Choose how to pay</h1>
-          <div class="method-tile" aria-label="Selected payment method: bank transfer">
-            <span class="method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"></rect><path d="M3.5 9h17"></path></svg></span>
-            <span><span class="method-title">BANK TRANSFER</span><span class="method-subtitle" style="display:block">Transfer</span></span>
-          </div>
-        </section>
-        <section class="panel detail-panel" aria-labelledby="payment-title">
-          <div class="eyebrow">Bank Transfer Details</div>
-          <h2 id="payment-title">Send to</h2>
-          <div class="row"><span class="label">ACC</span><span class="value" id="account-number">—</span></div>
-          <div class="row"><span class="label">Name</span><span class="value" id="account-name">—</span></div>
-          <div class="row"><span class="label">Bank</span><span class="value" id="bank-name">—</span></div>
-          <div class="note" id="instructions"></div>
+        <section class="panel availability-panel" aria-labelledby="availability-title">
+          <div class="eyebrow">Availability check</div>
+          <h1 id="availability-title">Check your stay</h1>
+          <p class="muted">Booking is available at the moment. Kindly message support if you have any questions. Add your guest details below and click Reserve before choosing a payment method.</p>
+          <p class="availability-caveat">Your selected room and dates have passed the availability check. The resort will review your reservation and payment receipt manually.</p>
         </section>
         <section class="panel" aria-labelledby="guest-title">
-          <div class="eyebrow">Reservation</div>
-          <h2 id="guest-title">Request a reservation</h2>
-          <p class="muted">Send your contact details for a manual reservation request. The resort must confirm room availability before your stay is booked. This form does not confirm a reservation.</p>
+          <div class="eyebrow">Guest details</div>
+          <h2 id="guest-title">Reserve your stay</h2>
+          <p class="muted">Enter your guest details and click Reserve. Payment options will appear after your reservation is submitted.</p>
           <form id="booking-form">
             <div class="form-grid">
               <div><label for="guest-name">Guest name *</label><input id="guest-name" name="name" autocomplete="name" maxlength="120" required /></div>
@@ -107,13 +103,40 @@
               <div><label for="guest-phone">Phone *</label><input id="guest-phone" name="phone" type="tel" autocomplete="tel" maxlength="80" required /></div>
               <div><label for="booking-reference">Request reference</label><input id="booking-reference" name="bookingReference" maxlength="100" readonly required /></div>
             </div>
-            <label class="consent"><input id="booking-consent" type="checkbox" required /><span>I agree to send these details and my requested stay information to Cala Laiya for availability checking.</span></label>
-            <button class="submit" type="submit" id="booking-submit">SEND RESERVATION REQUEST</button>
+            <label class="consent"><input id="booking-consent" type="checkbox" required /><span>I agree to send these details and my requested stay information to Cala Laiya for an availability check.</span></label>
+            <button class="submit" type="submit" id="booking-submit">RESERVE</button>
             <div class="status" id="booking-status" role="status" aria-live="polite"></div>
           </form>
+        </section>
+        <section class="panel choice-panel" id="payment-options" aria-labelledby="payment-choice-title" hidden>
+          <div class="eyebrow">Payment method</div>
+          <h2 id="payment-choice-title">Choose how to pay</h2>
+          <div class="method-actions">
+            <button class="method-tile method-choice" id="card-payment-button" type="button" aria-controls="card-unavailable">
+              <span class="method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"></rect><path d="M3.5 9h17"></path></svg></span>
+              <span><span class="method-title">CARD PAYMENT</span><span class="method-subtitle">Credit or debit card</span></span>
+            </button>
+            <button class="method-tile method-choice" id="bank-payment-button" type="button" aria-controls="bank-transfer-panel">
+              <span class="method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9h18M5 9v9m5-9v9m4-9v9m5-9v9M3 20h18M12 3l9 5H3l9-5Z"></path></svg></span>
+              <span><span class="method-title">BANK TRANSFER</span><span class="method-subtitle">Transfer to resort account</span></span>
+            </button>
+          </div>
+        </section>
+        <section class="panel card-unavailable" id="card-unavailable" aria-live="polite" hidden>
+          <h2>Card payment unavailable</h2>
+          <p class="muted">Card payment is currently unavailable. Please choose bank transfer instead.</p>
+          <button class="submit" id="switch-to-bank" type="button">CONTINUE WITH BANK TRANSFER</button>
+        </section>
+        <section class="panel detail-panel" id="bank-transfer-panel" aria-labelledby="payment-title" hidden>
+          <div class="eyebrow">Bank transfer details</div>
+          <h2 id="payment-title">Send to</h2>
+          <div class="row"><span class="label">ACC</span><span class="value" id="account-number">—</span></div>
+          <div class="row"><span class="label">Name</span><span class="value" id="account-name">—</span></div>
+          <div class="row"><span class="label">Bank</span><span class="value" id="bank-name">—</span></div>
+          <div class="note" id="instructions"></div>
           <div class="step" id="proof-step" hidden>
-            <h2>Upload payment proof</h2>
-            <p class="muted">Please transfer only after the resort confirms availability. Then upload your screenshot or receipt for manual verification.</p>
+            <h2>Send your payment receipt</h2>
+            <p class="muted">After making your bank transfer, upload a screenshot or receipt for the resort to verify.</p>
             <form id="proof-form">
               <label for="payment-proof">Payment screenshot or receipt (JPG, PNG, WebP, or PDF; max 5 MB) *</label>
               <input id="payment-proof" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required />
@@ -121,6 +144,7 @@
               <button class="submit" type="submit" id="proof-submit">SEND PAYMENT PROOF</button>
               <div class="status" id="proof-status" role="status" aria-live="polite"></div>
             </form>
+            <p class="availability-caveat">If Formspree rejects the file upload, your current plan does not permit uploads. The resort can enable uploads on a supported plan or provide a WhatsApp receipt channel.</p>
           </div>
         </section>
       </div>
@@ -133,7 +157,7 @@
           <div class="step-row"><span class="step-number">2</span><div><strong>Check-in / Check-out</strong><p id="summary-dates">Not specified</p></div></div>
           <div class="step-row"><span class="step-number">3</span><div><strong>Guests / Listed rate</strong><p id="summary-guests-rate">Not specified</p></div></div>
         </div>
-        <div class="stay-note">Please wait for the resort to confirm availability before making payment.</div>
+        <div class="stay-note">Booking is available at the moment. Kindly message support if you have any questions.</div>
       </aside>
     </main>
     <footer>Cala Laiya Beach Resort</footer>
@@ -160,7 +184,7 @@
         const guests = query.get("guests") || "Not specified";
         const rate = Number(query.get("rate"));
         const rateText = Number.isFinite(rate) && rate > 0 ? `₱${rate.toLocaleString("en-PH")}/night` : "Not specified";
-        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: awaiting confirmation from the resort.`;
+        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: availability checked; awaiting reservation and payment review.`;
         document.getElementById("booking-reference").value = requestReference;
         document.getElementById("summary-reference").textContent = requestReference;
         document.getElementById("summary-room").textContent = roomName;
@@ -172,6 +196,9 @@
         document.getElementById("instructions").textContent = details.instructions || "Please contact the resort for payment instructions.";
         const bookingForm = document.getElementById("booking-form");
         const proofStep = document.getElementById("proof-step");
+        const paymentOptions = document.getElementById("payment-options");
+        const cardUnavailable = document.getElementById("card-unavailable");
+        const bankTransferPanel = document.getElementById("bank-transfer-panel");
         const setStatus = (id, text, isError = false) => {
           const node = document.getElementById(id);
           node.textContent = text;
@@ -219,15 +246,27 @@
             await postToFormspree(
               makeSubmission("Reservation request", `Cala Laiya reservation request — ${requestReference}`),
             );
-            proofStep.hidden = false;
-            setStatus("booking-status", "Request sent. Wait for the resort to confirm availability before transferring. You can upload proof after payment.");
-            proofStep.scrollIntoView({ behavior: "smooth", block: "start" });
+            setStatus("booking-status", "Reservation submitted. Choose a payment method to continue.");
+            paymentOptions.hidden = false;
+            paymentOptions.scrollIntoView({ behavior: "smooth", block: "start" });
           } catch (error) {
             setStatus("booking-status", error.message, true);
           } finally {
             button.disabled = false;
           }
         });
+        document.getElementById("card-payment-button").addEventListener("click", () => {
+          cardUnavailable.hidden = false;
+          cardUnavailable.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+        const showBankTransfer = () => {
+          cardUnavailable.hidden = true;
+          bankTransferPanel.hidden = false;
+          proofStep.hidden = false;
+          bankTransferPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        document.getElementById("bank-payment-button").addEventListener("click", showBankTransfer);
+        document.getElementById("switch-to-bank").addEventListener("click", showBankTransfer);
         document.getElementById("proof-form").addEventListener("submit", async (event) => {
           event.preventDefault();
           const form = event.currentTarget;
@@ -256,3 +295,4 @@
     </script>
   </body>
 </html>
+  
