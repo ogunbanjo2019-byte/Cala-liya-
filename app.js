@@ -2,7 +2,6 @@ const EMAIL = "reservations@calalaiyabeach-resort.com";
 const PHONE = "+63 09512472881";
 const LOGO = "https://calalaiya.com/wp-content/themes/html5blank-stable/templatehtml/img/logo.png";
 const WA_URL = "https://wa.me/6309512472881";
-const TAWK_SRC = "https://embed.tawk.to/6ad74f3f76a87c34cf994245/1k5cgr4gs";
 const IMG = (name) => `https://calalaiya.com/wp-content/uploads/${name}`;
 const CLOUD = (version, name) =>
   `https://res.cloudinary.com/dcjjpngas/image/upload/v${version}/calalaiya-resort/rooms/${name}.jpg`;
@@ -19,232 +18,100 @@ let lightboxIndex = 0;
 
 const rooms = [
   {
-    name: "Luxury Pool Villa (3BR)",
-    slug: "luxury-pool-villa-3br",
-    id: "6a56eb117a0af6e00c185c63",
-    price: 19500,
-    beds: "3 King Bed · 2 single Beds",
-    notes: "Private Pool Villa · 3 Bathrooms",
-    capacity: 12,
-    image: CLOUD("1780204883", "dug04jgw5banmj4zqiua"),
-    photos: [
-      CLOUD("1780204883", "dug04jgw5banmj4zqiua"),
-      CLOUD("1780204883", "tbxl8ze1sprbkjidpbmg"),
-      CLOUD("1780204884", "odn4jusny11znu8u2fch"),
-      CLOUD("1780204884", "s2dlw5beyozyd66iglnf"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-      "Private Pool",
-      "Dedicated Villa Concierge",
-    ],
-  },
-  {
-    name: "Luxury Pool Villa (4BR)",
-    slug: "luxury-pool-villa-7br",
-    id: "6a56eb117a0af6e00c185c65",
-    price: 23000,
-    beds: "4 King Beds + 4 Queen Beds + 4 Twin beds",
-    notes: "Private Pool Villa · 7 Bathrooms",
-    capacity: 15,
-    image: CLOUD("1779607769", "l7wxhjgbchhlgz29djle"),
-    photos: [
-      CLOUD("1779607769", "l7wxhjgbchhlgz29djle"),
-      CLOUD("1779607770", "p3lmts6bldrzu0lwl6nq"),
-      CLOUD("1779607771", "vw2odmw3pkmvgvykq1mw"),
-      CLOUD("1779607771", "ufsalfj66dldgtfm7sbg"),
-      CLOUD("1779607772", "mas3uaa9unnnyeqdszw7"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-      "Private Pool",
-      "Dedicated Villa Concierge",
-    ],
-  },
-  {
-    name: "Luxury Pool Villa (5BR)",
-    slug: "luxury-pool-villa-5br",
-    id: "6a56eb117a0af6e00c185c64",
-    price: 34500,
-    beds: "2 King Beds + 3 Queen Beds + 5 Twin beds",
-    notes: "Private Pool Villa · 5 Bathrooms",
-    capacity: 20,
-    image: CLOUD("1779608000", "lnymzsdxgewcvpvndhdb"),
-    photos: [
-      CLOUD("1779608000", "lnymzsdxgewcvpvndhdb"),
-      CLOUD("1779608001", "b9dr2ougxjnntlvaaott"),
-      CLOUD("1779608001", "bnsmcndvtbxwpmzv0qup"),
-      CLOUD("1779608002", "m9gwh6zl3tcbtjyfgno7"),
-      CLOUD("1779608002", "xjxwsna0zvq75b2s38im"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-      "Private Pool",
-      "Dedicated Villa Concierge",
-    ],
-  },
-  {
-    name: "Two-Bedroom Casita",
-    slug: "two-bedroom-casita",
-    id: "6a56eb117a0af6e00c185c61",
-    price: 10000,
-    beds: "Loft: 1 Queen · 2 Twin | Bungalow: 1 Queen · 1 Twin · 1 Queen",
-    notes: "Cala Villa",
-    capacity: 6,
-    image: CLOUD("1779508924", "2bc-3"),
-    photos: [CLOUD("1779508924", "2bc-3")],
-    amenities: [
-      "Bottled Water",
-      "Coffee/Tea Making Facilities",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-    ],
-  },
-  {
-    name: "Three-Bedroom Casita",
-    slug: "three-bedroom-casita",
-    id: "6a56eb117a0af6e00c185c68",
-    price: 13000,
-    beds: "1 Queen Bed · 4 Twin Beds",
-    notes: "Cala Villa · Balcony",
-    capacity: 8,
-    image: CLOUD("1779508930", "3bc-3"),
-    photos: [
-      CLOUD("1779508930", "3bc-3"),
-      CLOUD("1779508931", "3bc-4"),
-      CLOUD("1779508933", "3bc-5"),
-      CLOUD("1779508935", "3bc-6"),
-      CLOUD("1779508937", "3bc-7"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-    ],
+    name: "Garden Casita",
+    slug: "garden-casita",
+    id: "demo-garden-casita",
+    category: "GARDEN CASITAS",
+    price: 5000,
+    beds: "1 Queen Bed",
+    capacity: 2,
+    image: CLOUD("1779508896", "garden-casita-1"),
+    photos: [CLOUD("1779508896", "garden-casita-1"), CLOUD("1779508899", "garden-casita-2")],
   },
   {
     name: "Garden Casita Premier",
     slug: "garden-casita-premier",
-    id: "6a56eb117a0af6e00c185c66",
+    id: "demo-garden-casita-premier",
+    category: "GARDEN CASITAS",
     price: 8000,
-    beds: "1 Queen Bed · 1 Twin Bed",
-    notes: "Garden View · PWD Friendly",
+    beds: "2 Queen Beds",
     capacity: 4,
     image: CLOUD("1779508907", "gcp-1"),
-    photos: [
-      CLOUD("1779508907", "gcp-1"),
-      CLOUD("1779508910", "gcp-2"),
-      CLOUD("1779508911", "gcp-3"),
-      CLOUD("1779508913", "gcp-4"),
-      CLOUD("1779508916", "gcp-5"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Coffee/Tea Making Facilities",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-      "PWD Accessible",
-    ],
+    photos: [CLOUD("1779508907", "gcp-1"), CLOUD("1779508910", "gcp-2"), CLOUD("1779508911", "gcp-3")],
+  },
+  {
+    name: "Two-Bedroom Casita",
+    slug: "two-bedroom-casita",
+    id: "demo-two-bedroom-casita",
+    category: "AQUATICO VILLAS",
+    price: 10000,
+    beds: "2 Queen Beds and 2 Single Beds",
+    capacity: 6,
+    image: CLOUD("1779508924", "2bc-3"),
+    photos: [CLOUD("1779508924", "2bc-3")],
+  },
+  {
+    name: "Three-Bedroom Casita",
+    slug: "three-bedroom-casita",
+    id: "demo-three-bedroom-casita",
+    category: "AQUATICO VILLAS",
+    price: 13000,
+    beds: "1 King Bed, 2 Queen Beds, and 1 Single Bed",
+    capacity: 8,
+    image: CLOUD("1779508930", "3bc-3"),
+    photos: [CLOUD("1779508930", "3bc-3"), CLOUD("1779508931", "3bc-4"), CLOUD("1779508933", "3bc-5")],
   },
   {
     name: "Three-Bedroom Premier",
     slug: "three-bedroom-premiere",
-    id: "6a56eb117a0af6e00c185c69",
+    id: "demo-three-bedroom-premier",
+    category: "AQUATICO VILLAS",
     price: 15500,
-    beds: "1 Queen Bed · 4 Twin Beds",
-    notes: "Cala Villa · Balcony · 3 Bathrooms",
+    beds: "1 King Bed and 2 Queen Beds",
     capacity: 9,
     image: CLOUD("1779508944", "3bp-1"),
-    photos: [
-      CLOUD("1779508944", "3bp-1"),
-      CLOUD("1779508952", "3bp-2"),
-      CLOUD("1779508958", "3bp-3"),
-      CLOUD("1779508962", "3bp-4"),
-      CLOUD("1779508967", "3bp-5"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-    ],
+    photos: [CLOUD("1779508944", "3bp-1"), CLOUD("1779508952", "3bp-2"), CLOUD("1779508958", "3bp-3")],
   },
   {
-    name: "Garden Casita",
-    slug: "garden-casita",
-    id: "6a56eb117a0af6e00c185c67",
-    price: 5000,
-    beds: "1 Queen Bed or 2 Twin Beds",
-    notes: "Garden View",
-    capacity: 2,
-    image: CLOUD("1779508896", "garden-casita-1"),
-    photos: [
-      CLOUD("1779508896", "garden-casita-1"),
-      CLOUD("1779508899", "garden-casita-2"),
-      CLOUD("1779508901", "garden-casita-3"),
-      CLOUD("1779508903", "garden-casita-4"),
-      CLOUD("1779508904", "garden-casita-5"),
-    ],
-    amenities: [
-      "Bottled Water",
-      "Coffee/Tea Making Facilities",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-    ],
+    name: "Three-Bedroom Luxury Pool Villa",
+    slug: "luxury-pool-villa-3br",
+    id: "demo-luxury-pool-villa-3br",
+    category: "PRIVATE LUXURY POOL VILLAS",
+    price: 19500,
+    beds: "6 Queen Beds",
+    capacity: 12,
+    image: CLOUD("1780204883", "dug04jgw5banmj4zqiua"),
+    photos: [CLOUD("1780204883", "dug04jgw5banmj4zqiua"), CLOUD("1780204883", "tbxl8ze1sprbkjidpbmg"), CLOUD("1780204884", "odn4jusny11znu8u2fch")],
+  },
+  {
+    name: "Four-Bedroom Luxury Pool Villa",
+    slug: "four-bedroom-luxury-pool-villa",
+    id: "demo-luxury-pool-villa-4br",
+    category: "PRIVATE LUXURY POOL VILLAS",
+    price: 23000,
+    beds: "1 King Bed and 6 Queen Beds",
+    capacity: 15,
+    image: CLOUD("1779607672", "ll58wwbcxisqgponwizh"),
+    photos: [CLOUD("1779607672", "ll58wwbcxisqgponwizh")],
+  },
+  {
+    name: "Five-Bedroom Luxury Pool Villa",
+    slug: "luxury-pool-villa-5br",
+    id: "demo-luxury-pool-villa-5br",
+    category: "PRIVATE LUXURY POOL VILLAS",
+    price: 34500,
+    beds: "2 King Beds and 8 Queen Beds",
+    capacity: 20,
+    image: CLOUD("1779608000", "lnymzsdxgewcvpvndhdb"),
+    photos: [CLOUD("1779608000", "lnymzsdxgewcvpvndhdb"), CLOUD("1779608001", "b9dr2ougxjnntlvaaott"), CLOUD("1779608001", "bnsmcndvtbxwpmzv0qup")],
   },
 ];
-const inclusions = [
-  "Beach view",
-  "Buffet breakfast, lunch & dinner",
-  "Access to resort facilities",
-  "Welcome amenities",
-  "Beach activities",
-  "Towels & linens",
-  "Access to spa",
-  "Free Wi-Fi",
-  "Fitness & sports facilities",
+const roomCategories = ["GARDEN CASITAS", "AQUATICO VILLAS", "PRIVATE LUXURY POOL VILLAS"];
+const inclusions = ["Daily buffet breakfast, lunch, and dinner"];
+const additionalGuestRates = [
+  "Adults: ₱1,500 per person",
+  "Children (7–12 years old): ₱1,000 per person",
+  "Children (6 years old and below): Complimentary",
 ];
 const heroSlides = [
   {
@@ -395,10 +262,10 @@ const link = (href, label, cls = "text-link", attrs = "") =>
 
 function header() {
   const current = location.pathname.replace(/\/$/, "") || "/";
-  return `<header class="site-header"><a class="brand" href="/" aria-label="Cala Laiya home"><img class="brand-logo" src="${esc(asset(LOGO))}" alt="Cala Laiya"></a><button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav" aria-label="Main navigation">${nav.map(([label, path]) => `<a href="${path}" class="${current === path ? "active" : ""}">${label}</a>`).join("")}</nav><a class="button button-small header-book" href="/booking">BOOK NOW</a></header>`;
+  return `<header class="site-header"><a class="brand" href="/" aria-label="Cala Laiya home"><img class="brand-logo" src="${esc(asset(LOGO))}" alt="Cala Laiya"></a><button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav" aria-label="Main navigation">${nav.map(([label, path]) => `<a href="${path}" class="${current === path ? "active" : ""}">${label}</a>`).join("")}</nav><a class="button button-small header-book" href="/booking">BOOKING DEMO</a></header>`;
 }
 function footer() {
-  return `<footer class="site-footer"><div class="footer-grid"><div><h3>ABOUT CALA LAIYA</h3><p>Nestled in a cove just 2.5 hours south of Manila, Cala Laiya is a tropical sanctuary that invites you to indulge in cozy accommodations situated in a pristine natural environment left unspoiled for you to discover.</p></div><div><h3>DISCOVER CALA LAIYA</h3><a href="/about">ABOUT CALA LAIYA</a><a href="/contact">GUEST REVIEWS</a><a href="/booking">RESERVE A ROOM</a><a href="/rooms">ROOMS</a><a href="/gallery">GALLERY</a></div><div><h3>EXPERIENCE</h3>${["Day Beds", "Kids Activities", "Water Activities", "Banca", "Paddle Board", "Snorkeling", "Kayaking", "Banana Boat", "Boat Tours"].map((x) => `<a href="/activities">${x}</a>`).join("")}</div><div><h3>GET IN TOUCH</h3><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p>Phone: <a href="tel:+6309512472881">+63 09512472881</a></p><a href="mailto:${EMAIL}">${EMAIL}</a><div class="social"><a href="https://www.facebook.com/share/1F23dsioTT/?mibextid=wwXIfr" aria-label="Facebook">f</a></div></div></div><div class="copyright">Copyright ©2026 Cala Laiya. All Rights Reserved.</div></footer><a class="whatsapp-float" href="${WA_URL}" target="_blank" rel="noreferrer" aria-label="Chat with us on WhatsApp"><span>◉</span></a>`;
+  return `<footer class="site-footer"><div class="footer-grid"><div><h3>ABOUT CALA LAIYA</h3><p>Nestled in a cove just 2.5 hours south of Manila, Cala Laiya is a tropical sanctuary that invites you to indulge in cozy accommodations situated in a pristine natural environment left unspoiled for you to discover.</p></div><div><h3>DISCOVER CALA LAIYA</h3><a href="/about">ABOUT CALA LAIYA</a><a href="/contact">GUEST REVIEWS</a><a href="/booking">BOOKING DEMO</a><a href="/rooms">ROOMS</a><a href="/gallery">GALLERY</a></div><div><h3>EXPERIENCE</h3>${["Day Beds", "Kids Activities", "Water Activities", "Banca", "Paddle Board", "Snorkeling", "Kayaking", "Banana Boat", "Boat Tours"].map((x) => `<a href="/activities">${x}</a>`).join("")}</div><div><h3>GET IN TOUCH</h3><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p>Phone: <a href="tel:+6309512472881">+63 09512472881</a></p><a href="mailto:${EMAIL}">${EMAIL}</a><div class="social"><a href="https://www.facebook.com/share/1F23dsioTT/?mibextid=wwXIfr" aria-label="Facebook">f</a></div></div></div><div class="copyright">Copyright ©2026 Cala Laiya. All Rights Reserved.</div></footer><a class="whatsapp-float" href="${WA_URL}" target="_blank" rel="noreferrer" aria-label="Chat with us on WhatsApp"><span>◉</span></a>`;
 }
 function pageBanner(title, sub, kicker, image) {
   const position =
@@ -412,7 +279,7 @@ function pageBanner(title, sub, kicker, image) {
   return `<section class="page-banner ${image ? "has-image" : ""}">${image ? `<div class="banner-photo" style="background-image:linear-gradient(90deg,rgba(8,24,30,.42),rgba(8,24,30,.12)),url('${asset(image)}');background-position:${position}"></div>` : ""}<div class="banner-copy"><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ""}${kicker ? `<span class="eyebrow banner-foot">${kicker}</span>` : ""}</div></section>`;
 }
 function roomCard(room, index = 0) {
-  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: Adult ₱1,500 · Kids 7–12 ₱1,000 · Kids 6 & below FREE</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES:</h3><ul class="compact-list">${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS:</h3><ul class="compact-list">${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/booking?room=${room.id}">BOOK NOW →</a></div><p class="small-note">* Rates are discounted and inclusive of buffet breakfast, lunch, and dinner.</p></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
+  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><ul class="room-facts"><li><strong>Maximum occupancy:</strong> ${room.capacity} guests</li><li><strong>Bedding:</strong> ${room.beds}</li><li><strong>Meals:</strong> ${inclusions[0]}</li></ul><p class="room-guest-rates"><strong>Additional guests:</strong> ${additionalGuestRates.join(" · ")}</p><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy.</p><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/booking?room=${encodeURIComponent(room.id)}">TRY BOOKING DEMO →</a></div></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
 }
 function homePage() {
   const slide = heroSlides[activeHero];
@@ -428,7 +295,7 @@ function homePage() {
  ]
    .map(([h, p]) => `<div><h3>${h}</h3><p>${p}</p></div>`)
    .join("")}</div></div></section>
- <section class="rooms-preview"><div class="section-heading"><span class="eyebrow copper">TIME TO RECONNECT</span><h2>Our Accommodations</h2><p>CalaLaiya Resort pairs roomy stays with practical comforts, warm hosting, and layouts suited for couples, families, and groups.</p></div><div class="preview-cards">${[rooms[0], rooms[1], rooms[2]].map((r) => `<article class="preview-card"><a href="/rooms/${r.slug}">${img(r.image, r.name)}</a><span class="eyebrow copper">50% OFF</span><h3>${r.name}</h3><p>${r.beds} · Good for ${r.capacity} pax</p><a href="/rooms/${r.slug}" class="text-link">VIEW ROOM</a></article>`).join("")}</div><a href="/rooms" class="button button-outline">SEE ALL ROOMS</a></section>
+ <section class="rooms-preview"><div class="section-heading"><span class="eyebrow copper">TIME TO RECONNECT</span><h2>Our Accommodations</h2><p>CalaLaiya Resort pairs roomy stays with practical comforts, warm hosting, and layouts suited for couples, families, and groups.</p></div><div class="preview-cards">${[rooms[0], rooms[1], rooms[2]].map((r) => `<article class="preview-card"><a href="/rooms/${r.slug}">${img(r.image, r.name)}</a><span class="eyebrow copper">PROMOTIONAL RATE</span><h3>${r.name}</h3><p>${money(r.price)} / night · ${r.beds} · Max ${r.capacity} guests</p><a href="/rooms/${r.slug}" class="text-link">VIEW ROOM</a></article>`).join("")}</div><a href="/rooms" class="button button-outline">SEE ALL ROOMS</a></section>
  <section class="activities-preview"><div class="section-heading"><span class="eyebrow copper">EXPERIENCE</span><h2>Activities</h2><p>CalaLaiya Resort keeps the shoreline lively with water adventures and easy group experiences.</p></div><div class="activity-cards">${activities
    .slice(0, 5)
    .map(
@@ -441,40 +308,15 @@ function homePage() {
  <section class="reviews-section"><span class="eyebrow copper">GUEST REVIEWS</span><h2>Your Opinion Matters</h2><article class="review-card"><span class="stars">★★★★★</span><h3>${review.title}</h3><p>${review.text}</p><div class="review-meta"><strong>${review.author}</strong><span>${review.date}</span></div></article><div class="review-controls"><button data-review="prev" aria-label="Previous">‹</button><button data-review="next" aria-label="Next">›</button></div><a class="text-link" href="/contact">GUEST REVIEWS →</a></section></main>`;
 }
 function aboutPage() {
-  const casitas = [
-    {
-      name: "Garden Casita",
-      capacity: "2 pax",
-      image: IMG("2024/04/sadasdasdasd-scaled.jpg"),
-    },
-    {
-      name: "Garden Casita Premier",
-      capacity: "3 pax",
-      image: IMG("2024/03/IMG_20231007_133234-2-scaled.jpg"),
-    },
-    {
-      name: "Two-Bedroom Casita",
-      capacity: "4 pax",
-      image: IMG("2021/06/15.jpg"),
-    },
-    {
-      name: "Three-Bedroom Casita",
-      capacity: "6 pax",
-      image: IMG("2024/01/IMG_1234-scaled.jpg"),
-    },
-    {
-      name: "Three-Bedroom Premier",
-      capacity: "6 pax",
-      image: IMG("2022/07/MG_6908-1-scaled.jpg"),
-    },
-  ];
-  return `<main>${pageBanner("Your perfect escape", "GET TO KNOW US BETTER", "ABOUT CALA LAIYA", IMG("2021/07/about-img-2.jpg"))}<section class="casitas-section"><div class="section-heading"><h2>CASITAS</h2></div><div class="casita-grid">${casitas.map((c) => `<article class="casita-card">${img(c.image, c.name)}<div class="capacity"><span>CAPACITY</span><strong>Good for ${c.capacity}</strong></div><div class="casita-caption"><h3>${c.name}</h3><a href="/rooms" class="text-link">SEE DETAILS →</a></div></article>`).join("")}</div></section><section class="about-explore"><div class="about-photo">${img(IMG("2021/07/about-img-2.jpg"), "Explore Cala Laiya")}<a href="/rooms" class="button">SEE OUR ROOMS →</a></div><div><span class="eyebrow copper">EXPLORE CALA LAIYA</span><h2>Need a break from the hustle and bustle of the city? Head south, unplug, and recharge.</h2><p>Only a 2.5 hour drive away from Manila, Cala Laiya is a tropical getaway nestled on Laiya, San Juan in Batangas. A panoramic view of Tayabas Bay and situated in front of the iconic marine sanctuary, Cala Laiya is ideal for exploring the wonders of the underwater world.</p><p>We offer spacious, cozy accommodation we call Casitas ('little house' in Spanish). Easy-breezy designs and eco-friendly amenities, our casitas are all walking distance to our dining areas, pools and the beach.</p><p>Cala Laiya offers a meticulously planned à la carte menu to cater to the palate of every vacationer ranging from Filipino favorites to International cuisine.</p><p>Our signature day-beds situated in front of the beach allows you to relax and enjoy the ocean horizon or gaze at a beautiful sunset.</p><p>Our outdoor activities include both motorized and non-motorized water sports. We also include a variety of outdoor games such as corn hole, badminton, and a mini playground for children to enjoy.</p><a href="/booking" class="text-link">BOOK TO UNWIND NOW →</a></div></section><section class="facilities"><article>${img(IMG("2021/07/explore-bananaboat.jpg"), "Aqua Sports")}<span class="eyebrow copper">OPERATING HOURS : 8AM - 5PM</span><h2>Aqua Sports</h2><a href="/activities" class="text-link">Please click here for more details</a></article><div><span class="eyebrow copper">SERVICES & FACILITIES</span><div class="facility-pair"><article>${img(IMG("2021/06/pool.jpg"), "Infinity Pool")}<span class="eyebrow copper">OPERATING HOURS : 7AM - 7PM</span><h3>Infinity Pool</h3><p>Dive in and relax. Here at Cala Laiya you can swim in the cool waters of our pools while being surrounded by a breathtaking view of Tayabas Bay. We have two infinity pools right by the beach. It is the perfect place to get some sun.</p></article><article>${img(IMG("2021/07/117A2832-min.jpg"), "Restaurant")}<span class="eyebrow copper">OPERATING HOURS : 6AM - 10PM</span><h3>Restaurant</h3><p>Our menu offers a delicious variety of cuisines from Filipino favourites to international dishes. Enjoy them at the restaurant, on our day beds, in the casitas or by the beach.</p></article></div></div></section><section class="puppy-section"><div><h2>The Pampered Puppy</h2><p>We at Cala Laiya know that your dogs are more than pets, they are members of the family. We offer a variety of amenities to ensure their stay with us is enjoyable as your own. Kindly contact our Front Office to request for a comfortable bed for your dog, which will be accompanied with a dog treat and a gleaming generously sized water bowl.</p><p>As comfortable as your dog will be in his room, a walk around the resort will also contribute to his comfort. Please speak to our Front Office to arrange to have your dog walked.</p><p>We offer a complete range of IAMS quality dry food to accommodate any dietary need.</p><a class="text-link" href="/contact">SEE MORE</a></div>${img(IMG("2021/08/pampered-puppy.jpg"), "Pampered Puppy")}</section></main>`;
+  const casitas = rooms;
+  return `<main>${pageBanner("Your perfect escape", "GET TO KNOW US BETTER", "ABOUT CALA LAIYA", IMG("2021/07/about-img-2.jpg"))}<section class="casitas-section"><div class="section-heading"><h2>ACCOMMODATIONS</h2></div><div class="casita-grid">${casitas.map((c) => `<article class="casita-card">${img(c.image, c.name)}<div class="capacity"><span>CAPACITY</span><strong>Good for ${c.capacity}</strong></div><div class="casita-caption"><div><h3>${c.name}</h3><p>${money(c.price)} / night · Max ${c.capacity} guests</p></div><a href="/rooms" class="text-link">SEE DETAILS →</a></div></article>`).join("")}</div></section><section class="about-explore"><div class="about-photo">${img(IMG("2021/07/about-img-2.jpg"), "Explore Cala Laiya")}<a href="/rooms" class="button">SEE OUR ROOMS →</a></div><div><span class="eyebrow copper">EXPLORE CALA LAIYA</span><h2>Need a break from the hustle and bustle of the city? Head south, unplug, and recharge.</h2><p>Only a 2.5 hour drive away from Manila, Cala Laiya is a tropical getaway nestled on Laiya, San Juan in Batangas. A panoramic view of Tayabas Bay and situated in front of the iconic marine sanctuary, Cala Laiya is ideal for exploring the wonders of the underwater world.</p><p>We offer spacious, cozy accommodation we call Casitas ('little house' in Spanish). Easy-breezy designs and eco-friendly amenities, our casitas are all walking distance to our dining areas, pools and the beach.</p><p>Cala Laiya offers a meticulously planned à la carte menu to cater to the palate of every vacationer ranging from Filipino favorites to International cuisine.</p><p>Our signature day-beds situated in front of the beach allows you to relax and enjoy the ocean horizon or gaze at a beautiful sunset.</p><p>Our outdoor activities include both motorized and non-motorized water sports. We also include a variety of outdoor games such as corn hole, badminton, and a mini playground for children to enjoy.</p><a href="/booking" class="text-link">BOOK TO UNWIND NOW →</a></div></section><section class="facilities"><article>${img(IMG("2021/07/explore-bananaboat.jpg"), "Aqua Sports")}<span class="eyebrow copper">OPERATING HOURS : 8AM - 5PM</span><h2>Aqua Sports</h2><a href="/activities" class="text-link">Please click here for more details</a></article><div><span class="eyebrow copper">SERVICES & FACILITIES</span><div class="facility-pair"><article>${img(IMG("2021/06/pool.jpg"), "Infinity Pool")}<span class="eyebrow copper">OPERATING HOURS : 7AM - 7PM</span><h3>Infinity Pool</h3><p>Dive in and relax. Here at Cala Laiya you can swim in the cool waters of our pools while being surrounded by a breathtaking view of Tayabas Bay. We have two infinity pools right by the beach. It is the perfect place to get some sun.</p></article><article>${img(IMG("2021/07/117A2832-min.jpg"), "Restaurant")}<span class="eyebrow copper">OPERATING HOURS : 6AM - 10PM</span><h3>Restaurant</h3><p>Our menu offers a delicious variety of cuisines from Filipino favourites to international dishes. Enjoy them at the restaurant, on our day beds, in the casitas or by the beach.</p></article></div></div></section><section class="puppy-section"><div><h2>The Pampered Puppy</h2><p>We at Cala Laiya know that your dogs are more than pets, they are members of the family. We offer a variety of amenities to ensure their stay with us is enjoyable as your own. Kindly contact our Front Office to request for a comfortable bed for your dog, which will be accompanied with a dog treat and a gleaming generously sized water bowl.</p><p>As comfortable as your dog will be in his room, a walk around the resort will also contribute to his comfort. Please speak to our Front Office to arrange to have your dog walked.</p><p>We offer a complete range of IAMS quality dry food to accommodate any dietary need.</p><a class="text-link" href="/contact">SEE MORE</a></div>${img(IMG("2021/08/pampered-puppy.jpg"), "Pampered Puppy")}</section></main>`;
 }
-function roomsPage() {
-  return `<main>${pageBanner("Leisurely Escape", "Relax Comfort", "OUR ROOMS", IMG("2021/07/banner-room.jpg"))}<section class="rooms-list">${rooms.map((r, i) => roomCard(r, i)).join("")}</section></main>`;
+function roomsPage(title = "Accommodation Rates & Room Information") {
+  const groupedRooms = roomCategories.map((category) => `<section class="room-category"><div class="room-category-heading"><span class="eyebrow copper">CALA LAIYA ACCOMMODATIONS</span><h2>${category}</h2></div>${rooms.filter((room) => room.category === category).map((room, index) => roomCard(room, index)).join("")}</section>`).join("");
+  return `<main>${pageBanner(title, "Discounted promotional rates · Per night", "ROOMS & RATES", IMG("2021/07/banner-room.jpg"))}<section class="rooms-list"><p class="room-rate-intro">All rates listed below are promotional rates and include daily buffet breakfast, lunch, and dinner.</p>${groupedRooms}<section class="additional-guest-panel"><h2>Additional Guest Rates</h2><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p>Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge.</p></section><p class="small-note">All accommodation rates are quoted per night. This unofficial website demo does not check live availability or create real reservations.</p></section></main>`;
 }
 function roomDetailPage(room) {
-  return `<main>${pageBanner(room.name, "Relax Comfort", "OUR ROOMS", room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: Adult ₱1,500 · Kids 7–12 ₱1,000 · Kids 6 & below FREE</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES</h3><ul>${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS</h3><ul>${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><p class="small-note">* Rates are discounted and inclusive of buffet breakfast, lunch, and dinner.</p><a class="button" href="/booking?room=${room.id}">BOOK NOW →</a></div></section></main>`;
+  return `<main>${pageBanner(room.name, "Promotional rate · Per night", room.category, room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><h3>ROOM INFORMATION</h3><ul><li>Maximum occupancy: ${room.capacity} guests</li><li>Bedding: ${room.beds}</li><li>Includes daily buffet breakfast, lunch, and dinner</li></ul><h3>ADDITIONAL GUEST RATES</h3><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge. This is a demo; check with the resort to confirm details.</p><a class="button" href="/booking?room=${encodeURIComponent(room.id)}">TRY BOOKING DEMO</a></div></section></main>`;
 }
 function activitiesPage() {
   return `<main>${pageBanner("Explore Cala Laiya", "What We Offer", "Experience", IMG("2021/07/banner-exp.jpg"))}<section class="activities-list">${activities.map((a, i) => `<article class="activity-row ${i % 2 ? "reverse" : ""}"><div class="activity-photo">${img(a.image, a.name)}${!["Massage Services"].includes(a.name) ? `<button class="see-gallery" data-activity="${i}">SEE GALLERY</button>` : ""}</div><div class="activity-copy"><span class="eyebrow copper">OPERATING HOURS : ${a.hours}</span><h2>${a.name}</h2><p>${a.description}</p>${a.extra ? `<p class="activity-extra">${a.extra}</p>` : ""}${["Balsa Raft", "Boat Tours"].includes(a.name) ? `<p class="small-note">* For inquiries and reservations please contact us at <a href="tel:+6309512472881">+63 09512472881</a> or <a href="mailto:${EMAIL}">${EMAIL}</a></p>` : ""}</div></article>`).join("")}</section></main>`;
@@ -483,39 +325,10 @@ function galleryPage() {
   return `<main>${pageBanner("GALLERY", "", "", IMG("2021/07/DSC_0967-min-scaled.jpg"))}<section class="gallery-grid">${gallery.map((g, i) => `<button class="gallery-item" data-lightbox="${i}">${img(g.image, g.alt)}<span>+</span></button>`).join("")}</section></main>`;
 }
 function contactPage() {
-  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Email Us</h2><p>We are eager to hear from you. Fill in your contact information and our team will get back to you.</p><input type="hidden" name="requestType" value="Contact inquiry"><input type="hidden" name="_subject" value="Cala Laiya Contact Inquiry"><label>FULL NAME<input name="name" type="text" required autocomplete="name"></label><label>EMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel"></label><label>MESSAGE<textarea name="message" rows="6" required></textarea></label><p class="small-note">* All fields are required. Your message will be sent to the resort.</p><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span><button type="submit" class="button" data-send-inquiry>SEND INQUIRY</button></form></section></main>`;
+  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Demo Contact Form</h2><p>This form is for the demo only. Use fictional details; nothing is sent or saved.</p><input type="hidden" name="requestType" value="Contact inquiry"><input type="hidden" name="_subject" value="Cala Laiya Contact Inquiry"><label>FULL NAME<input name="name" type="text" required autocomplete="name"></label><label>EMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel"></label><label>MESSAGE<textarea name="message" rows="6" required></textarea></label><p class="small-note">* Demo only. No contact details are emailed or stored.</p><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span><button type="submit" class="button" data-send-inquiry>TEST CONTACT FORM</button></form></section></main>`;
 }
 function promotionsPage() {
-  const promos = [
-    {
-      name: "Luxury Pool Villa (3BR)",
-      slug: "luxury-pool-villa-3br",
-      label: "Villa",
-      description:
-        "A spacious three-bedroom private pool villa for groups of up to 10. Features a king bed, two queen beds, three private bathrooms, a dedicated concierge, and an exclusive pool.",
-      price: "₱19,500",
-      image: rooms[0].image,
-    },
-    {
-      name: "Luxury Pool Villa (4BR)",
-      slug: "luxury-pool-villa-7br",
-      label: "Villa",
-      description:
-        "Our most expansive villa — seven bedrooms with a private pool for groups of up to 30. The pinnacle of resort luxury featuring three king beds, four queen beds, seven bathrooms, and a dedicated concierge.",
-      price: "₱23,000",
-      image: rooms[1].image,
-    },
-    {
-      name: "Luxury Pool Villa (5BR)",
-      slug: "luxury-pool-villa-5br",
-      label: "Villa",
-      description:
-        "A grand five-bedroom private pool villa for groups of up to 20. Perfect for large family gatherings or group celebrations with five king and queen beds, five bathrooms, and a private pool.",
-      price: "₱34,500",
-      image: rooms[2].image,
-    },
-  ];
-  return `<main class="promo-page"><section class="promo-hero" style="background-image:linear-gradient(90deg,rgba(6,19,28,.65),rgba(6,19,28,.1)),url('${asset("https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920")}')"><div class="promo-hero-copy"><div class="promo-crumb"><a href="/">HOME</a><span>/</span><a href="/rooms">ROOMS</a><span>/</span></div><span class="eyebrow">ACCOMMODATION</span><h1></h1><p>Up to 2 guests</p></div></section><section class="promo-details"><div class="promo-description"><span class="eyebrow copper">THE STAY</span><h2>A room with a view.</h2><span class="eyebrow copper">THE DETAILS</span><h3>Suite specifications</h3><dl class="suite-specs"><div><dt>SIZE</dt><dd>—</dd></div><div><dt>MAXIMUM GUESTS</dt><dd>2 guests</dd></div><div><dt>BED CONFIGURATION</dt><dd>Premium bedding</dd></div><div><dt>CATEGORY</dt><dd>Accommodation</dd></div><div><dt>CHECK-IN / OUT</dt><dd>2:00 PM / 12:00 NN</dd></div></dl></div><aside class="promo-reserve"><span class="eyebrow copper">✦ RESERVE THIS STAY</span><div class="promo-price">₱0 <small>/ night</small></div><form id="promo-reserve" action="/booking" method="get"><input type="hidden" name="room" value="undefined"><label>CHECK-IN<input type="date" name="checkin"></label><label>CHECK-OUT<input type="date" name="checkout"></label><label>GUESTS<select name="guests">${Array.from({ length: 8 }, (_, i) => `<option value="${i + 1}" ${i === 1 ? "selected" : ""}>${i + 1} ${i === 0 ? "Guest" : "Guests"}</option>`).join("")}</select></label><button class="button" type="submit">RESERVE NOW</button></form><a class="text-link" href="/contact">OR CONTACT US</a><ul class="promo-promises"><li>Best rate guarantee</li><li>Buffet breakfast included</li><li>Free cancellation up to 48h prior</li></ul></aside></section><section class="promo-other"><span class="eyebrow copper">MORE TO DISCOVER</span><h2>Other stays.</h2><div class="promo-cards">${promos.map((r) => `<article class="promo-card"><a href="/rooms/${r.slug}" class="promo-card-image">${img(r.image, r.name)}<span>50% OFF</span></a><div class="promo-card-copy"><span class="eyebrow copper">${r.label}</span><h3>${r.name}</h3><p>${r.description}</p><small>FROM</small><strong>${r.price}</strong><a class="text-link" href="/rooms/${r.slug}">VIEW →</a></div></article>`).join("")}</div></section><section class="promo-cta"><span class="eyebrow">CALA LAIYA</span><h2>Your awaits.</h2><a class="button" href="/booking?room=undefined">RESERVE NOW</a><a class="text-link" href="/rooms">EXPLORE OTHER ROOMS</a></section></main>`;
+  return roomsPage("Promotional Accommodation Rates");
 }
 function bookingDateLabel(d) {
   return d
@@ -538,7 +351,7 @@ function roomChoicesMarkup() {
     chosenDates.checkIn && chosenDates.checkOut
       ? Math.max(1, Math.round((chosenDates.checkOut - chosenDates.checkIn) / 86400000))
       : 1;
-  return `<div class="room-choice"><div class="room-choice-head"><div><span class="eyebrow copper">YOUR STAY</span><h2>Choose Your Room</h2><p class="muted">${bookingDateLabel(chosenDates.checkIn)} – ${bookingDateLabel(chosenDates.checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"}</p></div><button class="change-dates" type="button" data-change-dates>‹ Change dates</button></div><div class="room-choice-grid">${rooms.map((r) => `<article class="room-choice-card"><a href="/rooms/${r.slug}" class="room-choice-image" aria-label="View ${r.name}">${img(r.image, r.name)}<span>RESORT STAY</span></a><div class="room-choice-copy"><span class="eyebrow copper">${r.name.includes("Villa") ? "PRIVATE POOL VILLA" : "CASITA"}</span><h3>${r.name}</h3><p>${r.beds}</p><p class="room-capacity">Good for ${r.capacity} guests</p><div class="room-choice-price"><strong>${money(r.price)}</strong><small>/ night</small></div><button class="button room-book-button" type="button" data-room-id="${r.id}">CHECK AVAILABILITY</button></div></article>`).join("")}</div></div>`;
+  return `<div class="room-choice"><div class="room-choice-head"><div><span class="eyebrow copper">YOUR STAY</span><h2>Choose Your Room</h2><p class="muted">${bookingDateLabel(chosenDates.checkIn)} – ${bookingDateLabel(chosenDates.checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"}</p></div><button class="change-dates" type="button" data-change-dates>‹ Change dates</button></div><div class="room-choice-grid">${rooms.map((r) => `<article class="room-choice-card"><a href="/rooms/${r.slug}" class="room-choice-image" aria-label="View ${r.name}">${img(r.image, r.name)}<span>RESORT STAY</span></a><div class="room-choice-copy"><span class="eyebrow copper">${r.name.includes("Villa") ? "PRIVATE POOL VILLA" : "CASITA"}</span><h3>${r.name}</h3><p>${r.beds}</p><p class="room-choice-extra">Includes daily buffet breakfast, lunch, and dinner.</p><p class="room-capacity">Maximum occupancy: ${r.capacity} guests</p><p class="room-choice-extra">Extra guests: adults ₱1,500; ages 7–12 ₱1,000; ages 6 and under free.</p><div class="room-choice-price"><strong>${money(r.price)}</strong><small>/ night</small></div><button class="button room-book-button" type="button" data-room-id="${r.id}">CHECK SAMPLE AVAILABILITY</button></div></article>`).join("")}</div></div>`;
 }
 function bookingPage() {
   const q = new URLSearchParams(location.search);
@@ -580,7 +393,7 @@ function bookingPage() {
       }),
     );
   const step = bookingStage === "rooms" ? 1 : 0;
-  return `<main><section class="booking-hero" style="background-image:linear-gradient(90deg,rgba(8,24,30,.62),rgba(8,24,30,.14)),url('${asset("https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920")}')"><div><span class="eyebrow">RESERVATION</span><h1>Book Your Stay</h1></div></section><div class="booking-steps">${["Select Dates", "Choose Room", "Guest Details", "Confirm & Pay"].map((x, i) => `<span class="${i === step ? "current" : ""}"><b>${i + 1}</b>${x}</span>`).join("")}</div>${bookingStage === "rooms" ? `<section class="booking-body room-results">${roomChoicesMarkup()}</section>` : `<section class="booking-body"><div><h2>Select Your Dates</h2><p class="muted">Click a check-in date, then click a check-out date. Past dates cannot be selected.</p><div class="calendar-head"><button data-month="prev" aria-label="Previous month">‹</button><div><span class="eyebrow copper">SELECT CHECK-IN DATE</span><h3>${month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</h3></div><button data-month="next" aria-label="Next month">›</button></div><div class="calendar-grid">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((x) => `<span class="day-name">${x}</span>`).join("")}${cells.join("")}</div><div class="calendar-legend"><span><i class="legend-selected"></i>Selected</span><span><i class="legend-range"></i>Your Stay</span><span><i class="legend-past"></i>Past</span></div></div><aside class="trip-card"><h3>Trip Details</h3><div><small>CHECK-IN</small><strong>${bookingDateLabel(chosenDates.checkIn)}</strong></div><div><small>CHECK-OUT</small><strong>${bookingDateLabel(chosenDates.checkOut)}</strong></div><label>NUMBER OF GUESTS<select id="guests">${Array.from({ length: 20 }, (_, i) => `<option value="${i + 1}" ${i + 1 === selectedGuests ? "selected" : ""}>${i + 1} ${i === 0 ? "guest" : "guests"}</option>`).join("")}</select></label>${selectedRoom ? `<p class="selected-room">${selectedRoom.name} · ${money(selectedRoom.price)} / night</p>` : ""}<button class="button booking-choose" ${!chosenDates.checkIn || !chosenDates.checkOut ? "disabled" : ""}>CHOOSE ROOM <span>›</span></button></aside></section>`}</main>`;
+  return `<main><section class="booking-hero" style="background-image:linear-gradient(90deg,rgba(8,24,30,.62),rgba(8,24,30,.14)),url('${asset("https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920")}')"><div><span class="eyebrow">RESERVATION DEMO</span><h1>Try the Booking Flow</h1><p class="demo-booking-note">Demo only: dates and room availability are samples. No booking or payment is created.</p></div></section><div class="booking-steps">${["Select Dates", "Choose Room", "Guest Details", "Demo Payment"].map((x, i) => `<span class="${i === step ? "current" : ""}"><b>${i + 1}</b>${x}</span>`).join("")}</div>${bookingStage === "rooms" ? `<section class="booking-body room-results">${roomChoicesMarkup()}</section>` : `<section class="booking-body"><div><h2>Select Demo Dates</h2><p class="muted">Choose sample dates to preview the booking steps. No real availability is checked.</p><div class="calendar-head"><button data-month="prev" aria-label="Previous month">‹</button><div><span class="eyebrow copper">SELECT CHECK-IN DATE</span><h3>${month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</h3></div><button data-month="next" aria-label="Next month">›</button></div><div class="calendar-grid">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((x) => `<span class="day-name">${x}</span>`).join("")}${cells.join("")}</div><div class="calendar-legend"><span><i class="legend-selected"></i>Selected</span><span><i class="legend-range"></i>Your Stay</span><span><i class="legend-past"></i>Past</span></div></div><aside class="trip-card"><h3>Demo Trip Details</h3><div><small>CHECK-IN</small><strong>${bookingDateLabel(chosenDates.checkIn)}</strong></div><div><small>CHECK-OUT</small><strong>${bookingDateLabel(chosenDates.checkOut)}</strong></div><label>NUMBER OF GUESTS<select id="guests">${Array.from({ length: 20 }, (_, i) => `<option value="${i + 1}" ${i + 1 === selectedGuests ? "selected" : ""}>${i + 1} ${i === 0 ? "guest" : "guests"}</option>`).join("")}</select></label>${selectedRoom ? `<p class="selected-room">${selectedRoom.name} · ${money(selectedRoom.price)} / night (sample rate)</p>` : ""}<button class="button booking-choose" ${!chosenDates.checkIn || !chosenDates.checkOut ? "disabled" : ""}>CHOOSE DEMO ROOM <span>›</span></button></aside></section>`}</main>`;
 }
 function render() {
   const pageParam = new URLSearchParams(location.search).get("page");
@@ -603,7 +416,7 @@ function render() {
     const room = rooms.find((r) => `/rooms/${r.slug}` === route);
     content = room ? roomDetailPage(room) : roomsPage();
   } else content = homePage();
-  document.querySelector("#app").innerHTML = header() + content + footer();
+  document.querySelector("#app").innerHTML = header() + '<div class="demo-banner" role="note"><strong>UNOFFICIAL DEMO ONLY</strong> — Not connected to the resort’s booking system. No live availability, reservations, emails, payments, or receipt uploads.</div>' + content + footer();
   document.title = `${route === "/" ? "Cala Laiya Beach Resort" : rooms.find((r) => `/rooms/${r.slug}` === route)?.name || { about: "About Cala Laiya", rooms: "Our Rooms", "rooms/promos": "Accommodation", activities: "Activities", gallery: "Gallery", contact: "Contact Us", booking: "Book Your Stay" }[route.slice(1)] || "Cala Laiya Beach Resort"} | Cala Laiya`;
   bindEvents();
   window.scrollTo(0, 0);
@@ -704,45 +517,16 @@ function bindEvents() {
   );
   const form = document.querySelector("#contact-form");
   if (form) {
-    const button = form.querySelector("[data-send-inquiry]");
     const status = form.querySelector("#contact-status");
     const setStatus = (message, error = false) => {
       status.textContent = message;
       status.classList.toggle("is-error", error);
     };
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      const endpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
-      if (!endpoint) {
-        setStatus("The Formspree endpoint is not configured.", true);
-        return;
-      }
-      const data = new FormData(form);
-      data.set("requestType", "Contact inquiry");
-      data.set("_subject", "Cala Laiya Contact Inquiry");
-      button.disabled = true;
-      setStatus("Sending your inquiry…");
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: data,
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok)
-          throw new Error(
-            result.errors?.map((item) => item.message).filter(Boolean).join(" ") ||
-              result.error ||
-              "Could not send your inquiry. Please try again later.",
-          );
-        setStatus("Your inquiry was sent to the resort.");
-        form.reset();
-      } catch (error) {
-        setStatus(error.message || "Could not send your inquiry. Please try again later.", true);
-      } finally {
-        button.disabled = false;
-      }
+      setStatus("Demo only: no inquiry was emailed or stored. Use fictional details only.");
+      form.reset();
     });
   }
 }
@@ -768,7 +552,7 @@ function showWelcomePromo() {
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-label", "Cala Laiya welcome offer");
-  overlay.innerHTML = `<section class="welcome-promo-card"><div class="welcome-promo-copy"><span class="eyebrow copper">CALA LAIYA BEACH RESORT</span><h2>50% OFF</h2><p>Save up to <strong>50%</strong> on your stay at Cala Laiya Beach Resort.</p><p>Book direct for the best rates on ${room.name}.</p><button class="button welcome-promo-book" type="button" data-promo-book>BOOK NOW</button><button class="welcome-promo-rooms" type="button" data-promo-rooms>VIEW ALL ROOMS</button></div><div class="welcome-promo-photo">${img(room.image, room.name)}<button class="welcome-promo-close" type="button" aria-label="Close offer">×</button></div></section>`;
+  overlay.innerHTML = `<section class="welcome-promo-card"><div class="welcome-promo-copy"><span class="eyebrow copper">UNOFFICIAL BOOKING DEMO</span><h2>PROMOTIONAL RATES</h2><p>Preview accommodation details and promotional rates in this demo.</p><p>${room.name}: <strong>${money(room.price)} per night</strong>.</p><button class="button welcome-promo-book" type="button" data-promo-book>TRY BOOKING DEMO</button><button class="welcome-promo-rooms" type="button" data-promo-rooms>VIEW ALL ROOMS</button></div><div class="welcome-promo-photo">${img(room.image, room.name)}<button class="welcome-promo-close" type="button" aria-label="Close offer">×</button></div></section>`;
   document.body.append(overlay);
 
   const close = () => {
@@ -805,7 +589,7 @@ function showRoomBookingModal(room) {
   dialog.setAttribute("role", "dialog");
   dialog.setAttribute("aria-modal", "true");
   dialog.setAttribute("aria-label", `Booking details for ${room.name}`);
-  dialog.innerHTML = `<div class="room-modal-card"><div class="room-modal-copy"><button class="room-modal-close" type="button" aria-label="Close">×</button><span class="eyebrow copper">CALA LAIYA BEACH RESORT</span><h2>Check your stay.</h2><p>Your selected room is available at the moment. Kindly message support if you have any questions. Add your guest details below, then click Reserve to continue to payment.</p><div class="room-modal-summary"><span>ROOM<strong>${room.name}</strong></span><span>CHECK-IN<strong>${bookingDateLabel(chosenDates.checkIn)}</strong></span><span>CHECK-OUT<strong>${bookingDateLabel(chosenDates.checkOut)}</strong></span><span>ESTIMATED ROOM RATE<strong>${money(room.price)} × ${nights} ${nights === 1 ? "night" : "nights"}</strong></span></div><button class="button room-modal-book" type="button">CHECK AVAILABILITY</button><button class="room-modal-browse" type="button">VIEW ALL ROOMS</button><small>Booking is available at the moment. Kindly message support if you have any questions.</small></div><div class="room-modal-photo">${img(room.image, room.name)}</div></div>`;
+  dialog.innerHTML = `<div class="room-modal-card"><div class="room-modal-copy"><button class="room-modal-close" type="button" aria-label="Close">×</button><span class="eyebrow copper">UNOFFICIAL BOOKING DEMO</span><h2>Preview your stay.</h2><p>Continue to see a sample availability result and test the guest-details and payment screens. No live inventory is checked and nothing is sent or booked.</p><div class="room-modal-summary"><span>ROOM<strong>${room.name}</strong></span><span>CHECK-IN<strong>${bookingDateLabel(chosenDates.checkIn)}</strong></span><span>CHECK-OUT<strong>${bookingDateLabel(chosenDates.checkOut)}</strong></span><span>SAMPLE RATE<strong>${money(room.price)} × ${nights} ${nights === 1 ? "night" : "nights"}</strong></span></div><button class="button room-modal-book" type="button">CHECK SAMPLE AVAILABILITY</button><button class="room-modal-browse" type="button">VIEW ALL ROOMS</button><small>Demo only — no real availability check, reservation, email, payment, or receipt upload.</small></div><div class="room-modal-photo">${img(room.image, room.name)}</div></div>`;
   document.body.append(dialog);
   const close = () => dialog.remove();
   dialog.querySelector(".room-modal-close").onclick = close;
@@ -907,18 +691,6 @@ function mountGuestHelp() {
     input.value = "";
   };
 }
-function loadChat() {
-  if (window.__calaChatLoaded) return;
-  window.__calaChatLoaded = true;
-  window.Tawk_API = window.Tawk_API || {};
-  window.Tawk_LoadStart = new Date();
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = TAWK_SRC;
-  s.charset = "UTF-8";
-  s.setAttribute("crossorigin", "*");
-  document.head.appendChild(s);
-}
 async function init() {
   try {
     imageMap = await fetch("/assets/image-map.json").then((r) => (r.ok ? r.json() : {}));
@@ -926,7 +698,6 @@ async function init() {
     imageMap = {};
   }
   render();
-  loadChat();
   mountGuestHelp();
   window.setTimeout(showWelcomePromo, 900);
 }
