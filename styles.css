@@ -88,29 +88,6 @@ h3 {
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 1px 8px rgba(12, 35, 42, 0.05);
 }
-.demo-banner {
-  position: relative;
-  z-index: 5;
-  padding: 9px 18px;
-  background: #fff1cf;
-  color: #49391f;
-  border-bottom: 1px solid #e6cf9e;
-  text-align: center;
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-}
-.demo-banner strong {
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-.demo-booking-note {
-  max-width: 560px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--ink);
-  font-size: 13px;
-}
 .brand {
   display: flex;
   align-items: center;
@@ -2254,24 +2231,6 @@ main {
   font-size: 9px;
   letter-spacing: 0.1em;
 }
-.room-booking-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: rgba(26, 27, 25, 0.82);
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-.room-modal-card {
-  width: min(900px, 100%);
-  min-height: 395px;
-  background: #fff;
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  position: relative;
-  box-shadow: 0 22px 80px #0005;
-}
 .room-modal-copy {
   padding: 52px 36px 30px;
   position: relative;
@@ -2349,28 +2308,6 @@ main {
   min-height: 395px;
   object-fit: cover;
   display: block;
-}
-.booking-toast {
-  position: fixed;
-  z-index: 2100;
-  right: 22px;
-  top: 22px;
-  max-width: min(420px, calc(100vw - 32px));
-  padding: 16px 18px;
-  background: #fff;
-  border-left: 4px solid #9f7449;
-  box-shadow: 0 8px 36px #0002;
-  display: grid;
-  gap: 5px;
-  color: #29332e;
-}
-.booking-toast strong {
-  font-size: 13px;
-}
-.booking-toast span {
-  font-size: 11px;
-  line-height: 1.5;
-  color: #646a66;
 }
 .guest-help {
   position: fixed;
@@ -2494,12 +2431,6 @@ main {
   .room-choice-copy h3 {
     font-size: 15px;
   }
-  .room-modal-card {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow: auto;
-  }
   .room-modal-photo {
     grid-row: 1;
     max-height: 220px;
@@ -2589,48 +2520,6 @@ main {
 }
 
 /* Welcome offer shown on the visitor's first page view in a browser session. */
-.welcome-promo-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background: rgba(39, 38, 36, 0.88);
-}
-.welcome-promo-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
-  width: min(900px, 100%);
-  min-height: 396px;
-  background: #fff;
-  box-shadow: 0 22px 80px #0005;
-}
-.welcome-promo-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 50px 36px;
-}
-.welcome-promo-copy > .eyebrow {
-  font-size: 9px;
-  letter-spacing: 0.2em;
-}
-.welcome-promo-copy h2 {
-  margin: 14px 0 12px;
-  font: 30px var(--serif);
-}
-.welcome-promo-copy p {
-  margin: 7px 0;
-  color: #707471;
-  font-size: 12px;
-  line-height: 1.7;
-}
-.welcome-promo-copy p strong {
-  color: #a17649;
-}
 .welcome-promo-book {
   width: 100%;
   min-height: 42px;
@@ -2650,58 +2539,5 @@ main {
   font-size: 9px;
   letter-spacing: 0.12em;
 }
-.welcome-promo-photo {
-  position: relative;
-  min-width: 0;
-  min-height: 396px;
-  overflow: hidden;
-  background: #e9e7e2;
-}
-.welcome-promo-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 396px;
-  object-fit: cover;
-}
-.welcome-promo-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border: 0;
-  background: #fff;
-  color: #27332e;
-  cursor: pointer;
-  font-size: 21px;
-  line-height: 1;
-}
 @media (max-width: 680px) {
-  .welcome-promo-overlay {
-    padding: 16px;
   }
-  .welcome-promo-card {
-    grid-template-columns: 1fr;
-    width: min(480px, 100%);
-    max-height: 92vh;
-    overflow: auto;
-  }
-  .welcome-promo-photo {
-    grid-row: 1;
-    min-height: 210px;
-    max-height: 32vh;
-  }
-  .welcome-promo-photo img {
-    min-height: 210px;
-    max-height: 32vh;
-  }
-  .welcome-promo-copy {
-    padding: 28px 26px 26px;
-  }
-  .welcome-promo-copy h2 {
-    font-size: 27px;
-  }
-}

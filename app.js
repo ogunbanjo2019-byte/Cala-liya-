@@ -8,11 +8,6 @@ const CLOUD = (version, name) =>
 let imageMap = {};
 let activeHero = 0;
 let activeReview = 0;
-let chosenDates = { checkIn: null, checkOut: null };
-let chosenMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-let selectedRoom = null;
-let selectedGuests = 1;
-let bookingStage = "dates";
 let lightboxItems = [];
 let lightboxIndex = 0;
 
@@ -20,7 +15,7 @@ const rooms = [
   {
     name: "Garden Casita",
     slug: "garden-casita",
-    id: "demo-garden-casita",
+    id: "garden-casita",
     category: "GARDEN CASITAS",
     price: 5000,
     beds: "1 Queen Bed",
@@ -31,7 +26,7 @@ const rooms = [
   {
     name: "Garden Casita Premier",
     slug: "garden-casita-premier",
-    id: "demo-garden-casita-premier",
+    id: "garden-casita-premier",
     category: "GARDEN CASITAS",
     price: 8000,
     beds: "2 Queen Beds",
@@ -42,7 +37,7 @@ const rooms = [
   {
     name: "Two-Bedroom Casita",
     slug: "two-bedroom-casita",
-    id: "demo-two-bedroom-casita",
+    id: "two-bedroom-casita",
     category: "AQUATICO VILLAS",
     price: 10000,
     beds: "2 Queen Beds and 2 Single Beds",
@@ -53,7 +48,7 @@ const rooms = [
   {
     name: "Three-Bedroom Casita",
     slug: "three-bedroom-casita",
-    id: "demo-three-bedroom-casita",
+    id: "three-bedroom-casita",
     category: "AQUATICO VILLAS",
     price: 13000,
     beds: "1 King Bed, 2 Queen Beds, and 1 Single Bed",
@@ -64,7 +59,7 @@ const rooms = [
   {
     name: "Three-Bedroom Premier",
     slug: "three-bedroom-premiere",
-    id: "demo-three-bedroom-premier",
+    id: "three-bedroom-premier",
     category: "AQUATICO VILLAS",
     price: 15500,
     beds: "1 King Bed and 2 Queen Beds",
@@ -75,7 +70,7 @@ const rooms = [
   {
     name: "Three-Bedroom Luxury Pool Villa",
     slug: "luxury-pool-villa-3br",
-    id: "demo-luxury-pool-villa-3br",
+    id: "luxury-pool-villa-3br",
     category: "PRIVATE LUXURY POOL VILLAS",
     price: 19500,
     beds: "6 Queen Beds",
@@ -86,7 +81,7 @@ const rooms = [
   {
     name: "Four-Bedroom Luxury Pool Villa",
     slug: "four-bedroom-luxury-pool-villa",
-    id: "demo-luxury-pool-villa-4br",
+    id: "luxury-pool-villa-4br",
     category: "PRIVATE LUXURY POOL VILLAS",
     price: 23000,
     beds: "1 King Bed and 6 Queen Beds",
@@ -97,7 +92,7 @@ const rooms = [
   {
     name: "Five-Bedroom Luxury Pool Villa",
     slug: "luxury-pool-villa-5br",
-    id: "demo-luxury-pool-villa-5br",
+    id: "luxury-pool-villa-5br",
     category: "PRIVATE LUXURY POOL VILLAS",
     price: 34500,
     beds: "2 King Beds and 8 Queen Beds",
@@ -262,10 +257,10 @@ const link = (href, label, cls = "text-link", attrs = "") =>
 
 function header() {
   const current = location.pathname.replace(/\/$/, "") || "/";
-  return `<header class="site-header"><a class="brand" href="/" aria-label="Cala Laiya home"><img class="brand-logo" src="${esc(asset(LOGO))}" alt="Cala Laiya"></a><button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav" aria-label="Main navigation">${nav.map(([label, path]) => `<a href="${path}" class="${current === path ? "active" : ""}">${label}</a>`).join("")}</nav><a class="button button-small header-book" href="/booking">BOOKING DEMO</a></header>`;
+  return `<header class="site-header"><a class="brand" href="/" aria-label="Cala Laiya home"><img class="brand-logo" src="${esc(asset(LOGO))}" alt="Cala Laiya"></a><button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav" aria-label="Main navigation">${nav.map(([label, path]) => `<a href="${path}" class="${current === path ? "active" : ""}">${label}</a>`).join("")}</nav><a class="button button-small header-book" href="/booking">BOOK NOW</a></header>`;
 }
 function footer() {
-  return `<footer class="site-footer"><div class="footer-grid"><div><h3>ABOUT CALA LAIYA</h3><p>Nestled in a cove just 2.5 hours south of Manila, Cala Laiya is a tropical sanctuary that invites you to indulge in cozy accommodations situated in a pristine natural environment left unspoiled for you to discover.</p></div><div><h3>DISCOVER CALA LAIYA</h3><a href="/about">ABOUT CALA LAIYA</a><a href="/contact">GUEST REVIEWS</a><a href="/booking">BOOKING DEMO</a><a href="/rooms">ROOMS</a><a href="/gallery">GALLERY</a></div><div><h3>EXPERIENCE</h3>${["Day Beds", "Kids Activities", "Water Activities", "Banca", "Paddle Board", "Snorkeling", "Kayaking", "Banana Boat", "Boat Tours"].map((x) => `<a href="/activities">${x}</a>`).join("")}</div><div><h3>GET IN TOUCH</h3><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p>Phone: <a href="tel:+6309512472881">+63 09512472881</a></p><a href="mailto:${EMAIL}">${EMAIL}</a><div class="social"><a href="https://www.facebook.com/share/1F23dsioTT/?mibextid=wwXIfr" aria-label="Facebook">f</a></div></div></div><div class="copyright">Copyright ©2026 Cala Laiya. All Rights Reserved.</div></footer><a class="whatsapp-float" href="${WA_URL}" target="_blank" rel="noreferrer" aria-label="Chat with us on WhatsApp"><span>◉</span></a>`;
+  return `<footer class="site-footer"><div class="footer-grid"><div><h3>ABOUT CALA LAIYA</h3><p>Nestled in a cove just 2.5 hours south of Manila, Cala Laiya is a tropical sanctuary that invites you to indulge in cozy accommodations situated in a pristine natural environment left unspoiled for you to discover.</p></div><div><h3>DISCOVER CALA LAIYA</h3><a href="/about">ABOUT CALA LAIYA</a><a href="/contact">GUEST REVIEWS</a><a href="/booking">BOOK NOW</a><a href="/rooms">ROOMS</a><a href="/gallery">GALLERY</a></div><div><h3>EXPERIENCE</h3>${["Day Beds", "Kids Activities", "Water Activities", "Banca", "Paddle Board", "Snorkeling", "Kayaking", "Banana Boat", "Boat Tours"].map((x) => `<a href="/activities">${x}</a>`).join("")}</div><div><h3>GET IN TOUCH</h3><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p>Phone: <a href="tel:+6309512472881">+63 09512472881</a></p><a href="mailto:${EMAIL}">${EMAIL}</a><div class="social"><a href="https://www.facebook.com/share/1F23dsioTT/?mibextid=wwXIfr" aria-label="Facebook">f</a></div></div></div><div class="copyright">Copyright ©2026 Cala Laiya. All Rights Reserved.</div></footer><a class="whatsapp-float" href="${WA_URL}" target="_blank" rel="noreferrer" aria-label="Chat with us on WhatsApp"><span>◉</span></a>`;
 }
 function pageBanner(title, sub, kicker, image) {
   const position =
@@ -279,7 +274,7 @@ function pageBanner(title, sub, kicker, image) {
   return `<section class="page-banner ${image ? "has-image" : ""}">${image ? `<div class="banner-photo" style="background-image:linear-gradient(90deg,rgba(8,24,30,.42),rgba(8,24,30,.12)),url('${asset(image)}');background-position:${position}"></div>` : ""}<div class="banner-copy"><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ""}${kicker ? `<span class="eyebrow banner-foot">${kicker}</span>` : ""}</div></section>`;
 }
 function roomCard(room, index = 0) {
-  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><ul class="room-facts"><li><strong>Maximum occupancy:</strong> ${room.capacity} guests</li><li><strong>Bedding:</strong> ${room.beds}</li><li><strong>Meals:</strong> ${inclusions[0]}</li></ul><p class="room-guest-rates"><strong>Additional guests:</strong> ${additionalGuestRates.join(" · ")}</p><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy.</p><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/booking?room=${encodeURIComponent(room.id)}">TRY BOOKING DEMO →</a></div></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
+  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><ul class="room-facts"><li><strong>Maximum occupancy:</strong> ${room.capacity} guests</li><li><strong>Bedding:</strong> ${room.beds}</li><li><strong>Meals:</strong> ${inclusions[0]}</li></ul><p class="room-guest-rates"><strong>Additional guests:</strong> ${additionalGuestRates.join(" · ")}</p><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy.</p><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/payment-instructions.html?roomId=${encodeURIComponent(room.id)}&roomName=${encodeURIComponent(room.name)}&rate=${encodeURIComponent(room.price)}">RESERVE THIS ROOM →</a></div></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
 }
 function homePage() {
   const slide = heroSlides[activeHero];
@@ -313,10 +308,10 @@ function aboutPage() {
 }
 function roomsPage(title = "Accommodation Rates & Room Information") {
   const groupedRooms = roomCategories.map((category) => `<section class="room-category"><div class="room-category-heading"><span class="eyebrow copper">CALA LAIYA ACCOMMODATIONS</span><h2>${category}</h2></div>${rooms.filter((room) => room.category === category).map((room, index) => roomCard(room, index)).join("")}</section>`).join("");
-  return `<main>${pageBanner(title, "Discounted promotional rates · Per night", "ROOMS & RATES", IMG("2021/07/banner-room.jpg"))}<section class="rooms-list"><p class="room-rate-intro">All rates listed below are promotional rates and include daily buffet breakfast, lunch, and dinner.</p>${groupedRooms}<section class="additional-guest-panel"><h2>Additional Guest Rates</h2><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p>Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge.</p></section><p class="small-note">All accommodation rates are quoted per night. This unofficial website demo does not check live availability or create real reservations.</p></section></main>`;
+  return `<main>${pageBanner(title, "Discounted promotional rates · Per night", "ROOMS & RATES", IMG("2021/07/banner-room.jpg"))}<section class="rooms-list"><p class="room-rate-intro">All rates listed below are promotional rates and include daily buffet breakfast, lunch, and dinner.</p>${groupedRooms}<section class="additional-guest-panel"><h2>Additional Guest Rates</h2><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p>Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge.</p></section><p class="small-note">All accommodation rates are quoted per night. Please contact the resort to confirm current availability before making travel arrangements.</p></section></main>`;
 }
 function roomDetailPage(room) {
-  return `<main>${pageBanner(room.name, "Promotional rate · Per night", room.category, room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><h3>ROOM INFORMATION</h3><ul><li>Maximum occupancy: ${room.capacity} guests</li><li>Bedding: ${room.beds}</li><li>Includes daily buffet breakfast, lunch, and dinner</li></ul><h3>ADDITIONAL GUEST RATES</h3><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge. This is a demo; check with the resort to confirm details.</p><a class="button" href="/booking?room=${encodeURIComponent(room.id)}">TRY BOOKING DEMO</a></div></section></main>`;
+  return `<main>${pageBanner(room.name, "Promotional rate · Per night", room.category, room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">PROMOTIONAL RATE</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><h3>ROOM INFORMATION</h3><ul><li>Maximum occupancy: ${room.capacity} guests</li><li>Bedding: ${room.beds}</li><li>Includes daily buffet breakfast, lunch, and dinner</li></ul><h3>ADDITIONAL GUEST RATES</h3><ul>${additionalGuestRates.map((rate) => `<li>${rate}</li>`).join("")}</ul><p class="small-note">Additional guest charges apply when the number of guests exceeds the room’s standard occupancy. Children aged 6 and below stay free of charge. Please contact the resort to confirm current rates and availability.</p><a class="button" href="/payment-instructions.html?roomId=${encodeURIComponent(room.id)}&roomName=${encodeURIComponent(room.name)}&rate=${encodeURIComponent(room.price)}">RESERVE THIS ROOM</a></div></section></main>`;
 }
 function activitiesPage() {
   return `<main>${pageBanner("Explore Cala Laiya", "What We Offer", "Experience", IMG("2021/07/banner-exp.jpg"))}<section class="activities-list">${activities.map((a, i) => `<article class="activity-row ${i % 2 ? "reverse" : ""}"><div class="activity-photo">${img(a.image, a.name)}${!["Massage Services"].includes(a.name) ? `<button class="see-gallery" data-activity="${i}">SEE GALLERY</button>` : ""}</div><div class="activity-copy"><span class="eyebrow copper">OPERATING HOURS : ${a.hours}</span><h2>${a.name}</h2><p>${a.description}</p>${a.extra ? `<p class="activity-extra">${a.extra}</p>` : ""}${["Balsa Raft", "Boat Tours"].includes(a.name) ? `<p class="small-note">* For inquiries and reservations please contact us at <a href="tel:+6309512472881">+63 09512472881</a> or <a href="mailto:${EMAIL}">${EMAIL}</a></p>` : ""}</div></article>`).join("")}</section></main>`;
@@ -325,75 +320,13 @@ function galleryPage() {
   return `<main>${pageBanner("GALLERY", "", "", IMG("2021/07/DSC_0967-min-scaled.jpg"))}<section class="gallery-grid">${gallery.map((g, i) => `<button class="gallery-item" data-lightbox="${i}">${img(g.image, g.alt)}<span>+</span></button>`).join("")}</section></main>`;
 }
 function contactPage() {
-  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Demo Contact Form</h2><p>This form is for the demo only. Use fictional details; nothing is sent or saved.</p><input type="hidden" name="requestType" value="Contact inquiry"><input type="hidden" name="_subject" value="Cala Laiya Contact Inquiry"><label>FULL NAME<input name="name" type="text" required autocomplete="name"></label><label>EMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel"></label><label>MESSAGE<textarea name="message" rows="6" required></textarea></label><p class="small-note">* Demo only. No contact details are emailed or stored.</p><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span><button type="submit" class="button" data-send-inquiry>TEST CONTACT FORM</button></form></section></main>`;
+  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Send us an inquiry</h2><p>Send a message to our team and we will get back to you.</p><input type="hidden" name="requestType" value="Contact inquiry"><input type="hidden" name="_subject" value="Cala Laiya Contact Inquiry"><label>FULL NAME<input name="name" type="text" required autocomplete="name" maxlength="120"></label><label>EMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" maxlength="254"></label><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel" maxlength="80"></label><label>MESSAGE<textarea name="message" rows="6" required maxlength="5000"></textarea></label><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span><button type="submit" class="button" data-send-inquiry>Send inquiry</button></form></section></main>`;
 }
 function promotionsPage() {
   return roomsPage("Promotional Accommodation Rates");
 }
-function bookingDateLabel(d) {
-  return d
-    ? d.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    : "—";
-}
-function bookingDateKey(d) {
-  if (!d) return "";
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-function roomChoicesMarkup() {
-  const nights =
-    chosenDates.checkIn && chosenDates.checkOut
-      ? Math.max(1, Math.round((chosenDates.checkOut - chosenDates.checkIn) / 86400000))
-      : 1;
-  return `<div class="room-choice"><div class="room-choice-head"><div><span class="eyebrow copper">YOUR STAY</span><h2>Choose Your Room</h2><p class="muted">${bookingDateLabel(chosenDates.checkIn)} – ${bookingDateLabel(chosenDates.checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"}</p></div><button class="change-dates" type="button" data-change-dates>‹ Change dates</button></div><div class="room-choice-grid">${rooms.map((r) => `<article class="room-choice-card"><a href="/rooms/${r.slug}" class="room-choice-image" aria-label="View ${r.name}">${img(r.image, r.name)}<span>RESORT STAY</span></a><div class="room-choice-copy"><span class="eyebrow copper">${r.name.includes("Villa") ? "PRIVATE POOL VILLA" : "CASITA"}</span><h3>${r.name}</h3><p>${r.beds}</p><p class="room-choice-extra">Includes daily buffet breakfast, lunch, and dinner.</p><p class="room-capacity">Maximum occupancy: ${r.capacity} guests</p><p class="room-choice-extra">Extra guests: adults ₱1,500; ages 7–12 ₱1,000; ages 6 and under free.</p><div class="room-choice-price"><strong>${money(r.price)}</strong><small>/ night</small></div><button class="button room-book-button" type="button" data-room-id="${r.id}">CHECK SAMPLE AVAILABILITY</button></div></article>`).join("")}</div></div>`;
-}
 function bookingPage() {
-  const q = new URLSearchParams(location.search);
-  const initialId = q.get("room");
-  const initialCheckIn = q.get("checkin");
-  const initialCheckOut = q.get("checkout");
-  if (initialCheckIn && initialCheckOut) {
-    const checkIn = new Date(`${initialCheckIn}T12:00:00`);
-    const checkOut = new Date(`${initialCheckOut}T12:00:00`);
-    if (!Number.isNaN(checkIn.getTime()) && !Number.isNaN(checkOut.getTime()))
-      chosenDates = { checkIn, checkOut };
-  }
-  const requestedGuests = Number(q.get("guests"));
-  if (Number.isInteger(requestedGuests) && requestedGuests >= 1 && requestedGuests <= 20)
-    selectedGuests = requestedGuests;
-  selectedRoom = initialId ? rooms.find((r) => r.id === initialId) || null : null;
-  const month = chosenMonth,
-    first = new Date(month.getFullYear(), month.getMonth(), 1),
-    days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate(),
-    start = first.getDay();
-  const cells = Array(start)
-    .fill('<span class="calendar-blank"></span>')
-    .concat(
-      Array.from({ length: days }, (_, i) => {
-        const d = new Date(month.getFullYear(), month.getMonth(), i + 1);
-        const key = bookingDateKey(d);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const disabled = d < today;
-        const selected =
-          (chosenDates.checkIn && key === bookingDateKey(chosenDates.checkIn)) ||
-          (chosenDates.checkOut && key === bookingDateKey(chosenDates.checkOut));
-        const inRange =
-          chosenDates.checkIn &&
-          chosenDates.checkOut &&
-          d > chosenDates.checkIn &&
-          d < chosenDates.checkOut;
-        return `<button class="calendar-day ${disabled ? "past" : ""} ${selected ? "selected" : ""} ${inRange ? "in-range" : ""}" data-date="${key}" ${disabled ? "disabled" : ""}>${i + 1}</button>`;
-      }),
-    );
-  const step = bookingStage === "rooms" ? 1 : 0;
-  return `<main><section class="booking-hero" style="background-image:linear-gradient(90deg,rgba(8,24,30,.62),rgba(8,24,30,.14)),url('${asset("https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920")}')"><div><span class="eyebrow">RESERVATION DEMO</span><h1>Try the Booking Flow</h1><p class="demo-booking-note">Demo only: dates and room availability are samples. No booking or payment is created.</p></div></section><div class="booking-steps">${["Select Dates", "Choose Room", "Guest Details", "Demo Payment"].map((x, i) => `<span class="${i === step ? "current" : ""}"><b>${i + 1}</b>${x}</span>`).join("")}</div>${bookingStage === "rooms" ? `<section class="booking-body room-results">${roomChoicesMarkup()}</section>` : `<section class="booking-body"><div><h2>Select Demo Dates</h2><p class="muted">Choose sample dates to preview the booking steps. No real availability is checked.</p><div class="calendar-head"><button data-month="prev" aria-label="Previous month">‹</button><div><span class="eyebrow copper">SELECT CHECK-IN DATE</span><h3>${month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</h3></div><button data-month="next" aria-label="Next month">›</button></div><div class="calendar-grid">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((x) => `<span class="day-name">${x}</span>`).join("")}${cells.join("")}</div><div class="calendar-legend"><span><i class="legend-selected"></i>Selected</span><span><i class="legend-range"></i>Your Stay</span><span><i class="legend-past"></i>Past</span></div></div><aside class="trip-card"><h3>Demo Trip Details</h3><div><small>CHECK-IN</small><strong>${bookingDateLabel(chosenDates.checkIn)}</strong></div><div><small>CHECK-OUT</small><strong>${bookingDateLabel(chosenDates.checkOut)}</strong></div><label>NUMBER OF GUESTS<select id="guests">${Array.from({ length: 20 }, (_, i) => `<option value="${i + 1}" ${i + 1 === selectedGuests ? "selected" : ""}>${i + 1} ${i === 0 ? "guest" : "guests"}</option>`).join("")}</select></label>${selectedRoom ? `<p class="selected-room">${selectedRoom.name} · ${money(selectedRoom.price)} / night (sample rate)</p>` : ""}<button class="button booking-choose" ${!chosenDates.checkIn || !chosenDates.checkOut ? "disabled" : ""}>CHOOSE DEMO ROOM <span>›</span></button></aside></section>`}</main>`;
+  return `<main>${pageBanner("Plan your stay", "Reservations & availability", "BOOK CALA LAIYA", IMG("2021/07/banner-room.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Make a reservation request</h2><p>Send your requested stay details to the resort. The team will review availability and contact you to confirm your reservation.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p></div><div class="contact-form"><h2>Ready to continue?</h2><p>Use the secure request form to provide your details. Submitting a request does not confirm a reservation; the resort will follow up.</p><a class="button" href="/payment-instructions.html">Continue to reservation request</a></div></section></main>`;
 }
 function render() {
   const pageParam = new URLSearchParams(location.search).get("page");
@@ -416,7 +349,7 @@ function render() {
     const room = rooms.find((r) => `/rooms/${r.slug}` === route);
     content = room ? roomDetailPage(room) : roomsPage();
   } else content = homePage();
-  document.querySelector("#app").innerHTML = header() + '<div class="demo-banner" role="note"><strong>UNOFFICIAL DEMO ONLY</strong> — Not connected to the resort’s booking system. No live availability, reservations, emails, payments, or receipt uploads.</div>' + content + footer();
+  document.querySelector("#app").innerHTML = header() + content + footer();
   document.title = `${route === "/" ? "Cala Laiya Beach Resort" : rooms.find((r) => `/rooms/${r.slug}` === route)?.name || { about: "About Cala Laiya", rooms: "Our Rooms", "rooms/promos": "Accommodation", activities: "Activities", gallery: "Gallery", contact: "Contact Us", booking: "Book Your Stay" }[route.slice(1)] || "Cala Laiya Beach Resort"} | Cala Laiya`;
   bindEvents();
   window.scrollTo(0, 0);
@@ -428,7 +361,7 @@ function navigate(to) {
 function bindEvents() {
   document.querySelectorAll('a[href^="/"]').forEach((a) =>
     a.addEventListener("click", (e) => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || new URL(a.href).pathname.endsWith(".html")) return;
       e.preventDefault();
       navigate(a.getAttribute("href"));
     }),
@@ -479,137 +412,43 @@ function bindEvents() {
       showLightbox();
     }),
   );
-  document.querySelector('[data-month="prev"]')?.addEventListener("click", () => {
-    chosenMonth = new Date(chosenMonth.getFullYear(), chosenMonth.getMonth() - 1, 1);
-    render();
-  });
-  document.querySelector('[data-month="next"]')?.addEventListener("click", () => {
-    chosenMonth = new Date(chosenMonth.getFullYear(), chosenMonth.getMonth() + 1, 1);
-    render();
-  });
-  document.querySelectorAll(".calendar-day:not(.past)").forEach((b) =>
-    b.addEventListener("click", () => {
-      const d = new Date(`${b.dataset.date}T12:00:00`);
-      if (!chosenDates.checkIn || chosenDates.checkOut || d <= chosenDates.checkIn) {
-        chosenDates = { checkIn: d, checkOut: null };
-      } else chosenDates.checkOut = d;
-      render();
-    }),
-  );
-  document.querySelector("#guests")?.addEventListener("change", (event) => {
-    selectedGuests = Number(event.currentTarget.value || 1);
-  });
-  document.querySelector(".booking-choose")?.addEventListener("click", () => {
-    if (!chosenDates.checkIn || !chosenDates.checkOut) return;
-    selectedGuests = Number(document.querySelector("#guests")?.value || selectedGuests || 1);
-    bookingStage = "rooms";
-    render();
-  });
-  document.querySelector("[data-change-dates]")?.addEventListener("click", () => {
-    bookingStage = "dates";
-    render();
-  });
-  document.querySelectorAll("[data-room-id]").forEach((button) =>
-    button.addEventListener("click", () => {
-      selectedRoom = rooms.find((r) => r.id === button.dataset.roomId) || null;
-      if (selectedRoom) showRoomBookingModal(selectedRoom);
-    }),
-  );
   const form = document.querySelector("#contact-form");
   if (form) {
     const status = form.querySelector("#contact-status");
-    const setStatus = (message, error = false) => {
-      status.textContent = message;
-      status.classList.toggle("is-error", error);
-    };
-    form.addEventListener("submit", (event) => {
+    const button = form.querySelector("[data-send-inquiry]");
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      setStatus("Demo only: no inquiry was emailed or stored. Use fictional details only.");
-      form.reset();
+      const endpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
+      if (!endpoint) {
+        status.textContent = `Please contact us by phone at ${PHONE} or email ${EMAIL}.`;
+        status.classList.add("is-error");
+        return;
+      }
+      button.disabled = true;
+      status.classList.remove("is-error");
+      status.textContent = "Sending your inquiry…";
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const detail = result.errors?.map((item) => item.message).filter(Boolean).join(" ");
+          throw new Error(detail || result.error || "We could not send your inquiry. Please try again or contact us directly.");
+        }
+        status.textContent = "Thank you. Your inquiry has been sent to Cala Laiya.";
+        form.reset();
+      } catch (error) {
+        status.textContent = error.message || "We could not send your inquiry. Please try again or contact us directly.";
+        status.classList.add("is-error");
+      } finally {
+        button.disabled = false;
+      }
     });
   }
-}
-function showBookingToast(message) {
-  document.querySelector(".booking-toast")?.remove();
-  const toast = document.createElement("div");
-  toast.className = "booking-toast";
-  toast.setAttribute("role", "status");
-  toast.innerHTML = `<strong>Booking update</strong><span>${message}</span>`;
-  document.body.append(toast);
-  setTimeout(() => toast.remove(), 7000);
-}
-function showWelcomePromo() {
-  try {
-    if (window.sessionStorage.getItem("calaWelcomePromoDismissed")) return;
-  } catch {
-    // Continue without session storage if the browser blocks it.
-  }
-
-  const room = rooms[0];
-  const overlay = document.createElement("div");
-  overlay.className = "welcome-promo-overlay";
-  overlay.setAttribute("role", "dialog");
-  overlay.setAttribute("aria-modal", "true");
-  overlay.setAttribute("aria-label", "Cala Laiya welcome offer");
-  overlay.innerHTML = `<section class="welcome-promo-card"><div class="welcome-promo-copy"><span class="eyebrow copper">UNOFFICIAL BOOKING DEMO</span><h2>PROMOTIONAL RATES</h2><p>Preview accommodation details and promotional rates in this demo.</p><p>${room.name}: <strong>${money(room.price)} per night</strong>.</p><button class="button welcome-promo-book" type="button" data-promo-book>TRY BOOKING DEMO</button><button class="welcome-promo-rooms" type="button" data-promo-rooms>VIEW ALL ROOMS</button></div><div class="welcome-promo-photo">${img(room.image, room.name)}<button class="welcome-promo-close" type="button" aria-label="Close offer">×</button></div></section>`;
-  document.body.append(overlay);
-
-  const close = () => {
-    try {
-      window.sessionStorage.setItem("calaWelcomePromoDismissed", "1");
-    } catch {
-      // Dismiss the popup for this page view even when storage is unavailable.
-    }
-    overlay.remove();
-  };
-  overlay.querySelector(".welcome-promo-close").onclick = close;
-  overlay.querySelector("[data-promo-book]").onclick = () => {
-    close();
-    navigate(`/booking?room=${encodeURIComponent(room.id)}`);
-  };
-  overlay.querySelector("[data-promo-rooms]").onclick = () => {
-    close();
-    navigate("/rooms");
-  };
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) close();
-  });
-  overlay.querySelector(".welcome-promo-close").focus();
-}
-
-function showRoomBookingModal(room) {
-  document.querySelector(".room-booking-modal")?.remove();
-  const nights =
-    chosenDates.checkIn && chosenDates.checkOut
-      ? Math.max(1, Math.round((chosenDates.checkOut - chosenDates.checkIn) / 86400000))
-      : 1;
-  const dialog = document.createElement("div");
-  dialog.className = "room-booking-modal";
-  dialog.setAttribute("role", "dialog");
-  dialog.setAttribute("aria-modal", "true");
-  dialog.setAttribute("aria-label", `Booking details for ${room.name}`);
-  dialog.innerHTML = `<div class="room-modal-card"><div class="room-modal-copy"><button class="room-modal-close" type="button" aria-label="Close">×</button><span class="eyebrow copper">UNOFFICIAL BOOKING DEMO</span><h2>Preview your stay.</h2><p>Continue to see a sample availability result and test the guest-details and payment screens. No live inventory is checked and nothing is sent or booked.</p><div class="room-modal-summary"><span>ROOM<strong>${room.name}</strong></span><span>CHECK-IN<strong>${bookingDateLabel(chosenDates.checkIn)}</strong></span><span>CHECK-OUT<strong>${bookingDateLabel(chosenDates.checkOut)}</strong></span><span>SAMPLE RATE<strong>${money(room.price)} × ${nights} ${nights === 1 ? "night" : "nights"}</strong></span></div><button class="button room-modal-book" type="button">CHECK SAMPLE AVAILABILITY</button><button class="room-modal-browse" type="button">VIEW ALL ROOMS</button><small>Demo only — no real availability check, reservation, email, payment, or receipt upload.</small></div><div class="room-modal-photo">${img(room.image, room.name)}</div></div>`;
-  document.body.append(dialog);
-  const close = () => dialog.remove();
-  dialog.querySelector(".room-modal-close").onclick = close;
-  dialog.querySelector(".room-modal-browse").onclick = close;
-  dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) close();
-  });
-  dialog.querySelector(".room-modal-book").onclick = () => {
-    const params = new URLSearchParams({
-      roomId: room.id,
-      roomName: room.name,
-      checkIn: bookingDateKey(chosenDates.checkIn),
-      checkOut: bookingDateKey(chosenDates.checkOut),
-      guests: String(selectedGuests || 1),
-      rate: String(room.price),
-    });
-    close();
-    window.location.href = `/payment-instructions.html?${params.toString()}`;
-  };
-  dialog.querySelector(".room-modal-close").focus();
 }
 function showLightbox() {
   if (!lightboxItems.length) return;
@@ -699,13 +538,11 @@ async function init() {
   }
   render();
   mountGuestHelp();
-  window.setTimeout(showWelcomePromo, 900);
 }
 window.addEventListener("popstate", render);
 window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     document.querySelector(".lightbox")?.remove();
-    document.querySelector(".welcome-promo-close")?.click();
   }
   if (document.querySelector(".lightbox") && e.key === "ArrowRight") {
     lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
