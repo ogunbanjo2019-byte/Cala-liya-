@@ -19,10 +19,10 @@ let lightboxIndex = 0;
 
 const rooms = [
   {
-    name: "Luxury Pool Villa 3BR",
+    name: "Luxury Pool Villa (3BR)",
     slug: "luxury-pool-villa-3br",
     id: "6a56eb117a0af6e00c185c63",
-    price: 38000,
+    price: 19500,
     beds: "3 King Bed · 2 single Beds",
     notes: "Private Pool Villa · 3 Bathrooms",
     capacity: 12,
@@ -47,13 +47,13 @@ const rooms = [
     ],
   },
   {
-    name: "Luxury Pool Villa 7BR",
+    name: "Luxury Pool Villa (4BR)",
     slug: "luxury-pool-villa-7br",
     id: "6a56eb117a0af6e00c185c65",
-    price: 73000,
+    price: 23000,
     beds: "4 King Beds + 4 Queen Beds + 4 Twin beds",
     notes: "Private Pool Villa · 7 Bathrooms",
-    capacity: 30,
+    capacity: 15,
     image: CLOUD("1779607769", "l7wxhjgbchhlgz29djle"),
     photos: [
       CLOUD("1779607769", "l7wxhjgbchhlgz29djle"),
@@ -76,10 +76,10 @@ const rooms = [
     ],
   },
   {
-    name: "Luxury Pool Villa 5BR",
+    name: "Luxury Pool Villa (5BR)",
     slug: "luxury-pool-villa-5br",
     id: "6a56eb117a0af6e00c185c64",
-    price: 53000,
+    price: 34500,
     beds: "2 King Beds + 3 Queen Beds + 5 Twin beds",
     notes: "Private Pool Villa · 5 Bathrooms",
     capacity: 20,
@@ -105,33 +105,10 @@ const rooms = [
     ],
   },
   {
-    name: "Luxury Pool Villa 1BR",
-    slug: "luxury-pool-villa-1br",
-    id: "6a56eb117a0af6e00c185c62",
-    price: 20200,
-    beds: "1 King Bed",
-    notes: "Private Pool Villa",
-    capacity: 2,
-    image: CLOUD("1779607672", "ll58wwbcxisqgponwizh"),
-    photos: [CLOUD("1779607672", "ll58wwbcxisqgponwizh")],
-    amenities: [
-      "Bottled Water",
-      "Espresso Machine with Coffee Pods",
-      "Safety Deposit Box",
-      "Mini Refrigerator",
-      "Dental Kits",
-      "Conditioning Shampoo",
-      "Bath Gel",
-      "Cable TV",
-      "Private Pool",
-      "Dedicated Villa Concierge",
-    ],
-  },
-  {
-    name: "Two Bedroom Casita",
+    name: "Two-Bedroom Casita",
     slug: "two-bedroom-casita",
     id: "6a56eb117a0af6e00c185c61",
-    price: 20000,
+    price: 10000,
     beds: "Loft: 1 Queen · 2 Twin | Bungalow: 1 Queen · 1 Twin · 1 Queen",
     notes: "Cala Villa",
     capacity: 6,
@@ -149,10 +126,10 @@ const rooms = [
     ],
   },
   {
-    name: "Three Bedroom Casita",
+    name: "Three-Bedroom Casita",
     slug: "three-bedroom-casita",
     id: "6a56eb117a0af6e00c185c68",
-    price: 25000,
+    price: 13000,
     beds: "1 Queen Bed · 4 Twin Beds",
     notes: "Cala Villa · Balcony",
     capacity: 8,
@@ -179,7 +156,7 @@ const rooms = [
     name: "Garden Casita Premier",
     slug: "garden-casita-premier",
     id: "6a56eb117a0af6e00c185c66",
-    price: 14000,
+    price: 8000,
     beds: "1 Queen Bed · 1 Twin Bed",
     notes: "Garden View · PWD Friendly",
     capacity: 4,
@@ -204,10 +181,10 @@ const rooms = [
     ],
   },
   {
-    name: "Three Bedroom Premiere",
+    name: "Three-Bedroom Premier",
     slug: "three-bedroom-premiere",
     id: "6a56eb117a0af6e00c185c69",
-    price: 29000,
+    price: 15500,
     beds: "1 Queen Bed · 4 Twin Beds",
     notes: "Cala Villa · Balcony · 3 Bathrooms",
     capacity: 9,
@@ -234,7 +211,7 @@ const rooms = [
     name: "Garden Casita",
     slug: "garden-casita",
     id: "6a56eb117a0af6e00c185c67",
-    price: 10000,
+    price: 5000,
     beds: "1 Queen Bed or 2 Twin Beds",
     notes: "Garden View",
     capacity: 2,
@@ -259,13 +236,15 @@ const rooms = [
   },
 ];
 const inclusions = [
-  "Buffet Breakfast & Dinner",
-  "Welcome Drinks upon Arrival",
-  "Complimentary Wi-Fi",
-  "Daily Housekeeping & Resort Service",
-  "Free Use of Swimming Pools & Beach Facilities",
-  "Free Parking",
-  "Beach Access & Sun Loungers",
+  "Beach view",
+  "Buffet breakfast, lunch & dinner",
+  "Access to resort facilities",
+  "Welcome amenities",
+  "Beach activities",
+  "Towels & linens",
+  "Access to spa",
+  "Free Wi-Fi",
+  "Fitness & sports facilities",
 ];
 const heroSlides = [
   {
@@ -433,7 +412,7 @@ function pageBanner(title, sub, kicker, image) {
   return `<section class="page-banner ${image ? "has-image" : ""}">${image ? `<div class="banner-photo" style="background-image:linear-gradient(90deg,rgba(8,24,30,.42),rgba(8,24,30,.12)),url('${asset(image)}');background-position:${position}"></div>` : ""}<div class="banner-copy"><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ""}${kicker ? `<span class="eyebrow banner-foot">${kicker}</span>` : ""}</div></section>`;
 }
 function roomCard(room, index = 0) {
-  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: ₱1,500 / person</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES:</h3><ul class="compact-list">${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS:</h3><ul class="compact-list">${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/booking?room=${room.id}">BOOK NOW →</a></div><p class="small-note">* Rates are quoted in Philippine Peso and are inclusive of VAT and all surcharges.</p></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
+  return `<article class="room-card ${index % 2 ? "reverse" : ""}"><div class="room-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: Adult ₱1,500 · Kids 7–12 ₱1,000 · Kids 6 & below FREE</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES:</h3><ul class="compact-list">${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS:</h3><ul class="compact-list">${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><div class="room-actions"><a class="text-link" href="/rooms/${room.slug}">VIEW DETAILS →</a><a class="text-link" href="/booking?room=${room.id}">BOOK NOW →</a></div><p class="small-note">* Rates are discounted and inclusive of buffet breakfast, lunch, and dinner.</p></div><a class="room-image" href="/rooms/${room.slug}" aria-label="${room.name}">${img(room.image, room.name)}<span class="image-count">${room.photos.length > 1 ? `+${room.photos.length - 1} more` : ""}</span></a></article>`;
 }
 function homePage() {
   const slide = heroSlides[activeHero];
@@ -474,17 +453,17 @@ function aboutPage() {
       image: IMG("2024/03/IMG_20231007_133234-2-scaled.jpg"),
     },
     {
-      name: "Two Bedroom Casita",
+      name: "Two-Bedroom Casita",
       capacity: "4 pax",
       image: IMG("2021/06/15.jpg"),
     },
     {
-      name: "Three Bedroom Casita",
+      name: "Three-Bedroom Casita",
       capacity: "6 pax",
       image: IMG("2024/01/IMG_1234-scaled.jpg"),
     },
     {
-      name: "Three Bedroom Premiere",
+      name: "Three-Bedroom Premier",
       capacity: "6 pax",
       image: IMG("2022/07/MG_6908-1-scaled.jpg"),
     },
@@ -495,7 +474,7 @@ function roomsPage() {
   return `<main>${pageBanner("Leisurely Escape", "Relax Comfort", "OUR ROOMS", IMG("2021/07/banner-room.jpg"))}<section class="rooms-list">${rooms.map((r, i) => roomCard(r, i)).join("")}</section></main>`;
 }
 function roomDetailPage(room) {
-  return `<main>${pageBanner(room.name, "Relax Comfort", "OUR ROOMS", room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: ₱1,500 / person</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES</h3><ul>${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS</h3><ul>${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><p class="small-note">* Rates are quoted in Philippine Peso and are inclusive of VAT and all surcharges.</p><a class="button" href="/booking?room=${room.id}">BOOK NOW →</a></div></section></main>`;
+  return `<main>${pageBanner(room.name, "Relax Comfort", "OUR ROOMS", room.image)}<section class="detail-layout"><div class="detail-gallery">${room.photos.map((u, i) => `<button class="detail-photo" data-lightbox="${i}">${img(u, `${room.name} ${i + 1}`)}</button>`).join("")}</div><div class="detail-copy"><span class="eyebrow copper">50% OFF</span><h2>${room.name}</h2><p class="room-price">${money(room.price)} <small>/ night</small></p><p class="muted">Extra pax: Adult ₱1,500 · Kids 7–12 ₱1,000 · Kids 6 & below FREE</p><p><strong>${room.beds}</strong><br>${room.notes}<br>Good for ${room.capacity} pax</p><h3>AMENITIES</h3><ul>${room.amenities.map((x) => `<li>${x}</li>`).join("")}</ul><h3>INCLUSIONS</h3><ul>${inclusions.map((x) => `<li>${x}</li>`).join("")}</ul><p class="small-note">* Rates are discounted and inclusive of buffet breakfast, lunch, and dinner.</p><a class="button" href="/booking?room=${room.id}">BOOK NOW →</a></div></section></main>`;
 }
 function activitiesPage() {
   return `<main>${pageBanner("Explore Cala Laiya", "What We Offer", "Experience", IMG("2021/07/banner-exp.jpg"))}<section class="activities-list">${activities.map((a, i) => `<article class="activity-row ${i % 2 ? "reverse" : ""}"><div class="activity-photo">${img(a.image, a.name)}${!["Massage Services"].includes(a.name) ? `<button class="see-gallery" data-activity="${i}">SEE GALLERY</button>` : ""}</div><div class="activity-copy"><span class="eyebrow copper">OPERATING HOURS : ${a.hours}</span><h2>${a.name}</h2><p>${a.description}</p>${a.extra ? `<p class="activity-extra">${a.extra}</p>` : ""}${["Balsa Raft", "Boat Tours"].includes(a.name) ? `<p class="small-note">* For inquiries and reservations please contact us at <a href="tel:+6309512472881">+63 09512472881</a> or <a href="mailto:${EMAIL}">${EMAIL}</a></p>` : ""}</div></article>`).join("")}</section></main>`;
@@ -509,30 +488,30 @@ function contactPage() {
 function promotionsPage() {
   const promos = [
     {
-      name: "Luxury Pool Villa 3BR",
+      name: "Luxury Pool Villa (3BR)",
       slug: "luxury-pool-villa-3br",
       label: "Villa",
       description:
         "A spacious three-bedroom private pool villa for groups of up to 10. Features a king bed, two queen beds, three private bathrooms, a dedicated concierge, and an exclusive pool.",
-      price: "₱19,000",
+      price: "₱19,500",
       image: rooms[0].image,
     },
     {
-      name: "Luxury Pool Villa 7BR",
+      name: "Luxury Pool Villa (4BR)",
       slug: "luxury-pool-villa-7br",
       label: "Villa",
       description:
         "Our most expansive villa — seven bedrooms with a private pool for groups of up to 30. The pinnacle of resort luxury featuring three king beds, four queen beds, seven bathrooms, and a dedicated concierge.",
-      price: "₱36,500",
+      price: "₱23,000",
       image: rooms[1].image,
     },
     {
-      name: "Luxury Pool Villa 5BR",
+      name: "Luxury Pool Villa (5BR)",
       slug: "luxury-pool-villa-5br",
       label: "Villa",
       description:
         "A grand five-bedroom private pool villa for groups of up to 20. Perfect for large family gatherings or group celebrations with five king and queen beds, five bathrooms, and a private pool.",
-      price: "₱26,500",
+      price: "₱34,500",
       image: rooms[2].image,
     },
   ];
