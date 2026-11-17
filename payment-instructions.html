@@ -89,13 +89,13 @@
         <section class="panel availability-panel" aria-labelledby="availability-title">
           <div class="eyebrow">Availability check</div>
           <h1 id="availability-title">Check your stay</h1>
-          <p class="muted">Booking is available at the moment. Kindly message support if you have any questions. Add your guest details below and click Reserve before choosing a payment method.</p>
-          <p class="availability-caveat">Your selected room and dates have passed the availability check. The resort will review your reservation and payment receipt manually.</p>
+          <p class="muted">Send your requested stay details to Cala Laiya. The resort will review availability and contact you to confirm your reservation.</p>
+          <p class="availability-caveat">Availability is not confirmed until the resort has reviewed your request and contacted you.</p>
         </section>
         <section class="panel" aria-labelledby="guest-title">
           <div class="eyebrow">Guest details</div>
           <h2 id="guest-title">Reserve your stay</h2>
-          <p class="muted">Enter your guest details and click Reserve. Payment options will appear after your reservation is submitted.</p>
+          <p class="muted">Enter your details and click Reserve to send your request. Payment instructions will be provided after the resort reviews your request.</p>
           <form id="booking-form">
             <div class="form-grid">
               <div><label for="guest-name">Guest name *</label><input id="guest-name" name="name" autocomplete="name" maxlength="120" required /></div>
@@ -157,7 +157,7 @@
           <div class="step-row"><span class="step-number">2</span><div><strong>Check-in / Check-out</strong><p id="summary-dates">Not specified</p></div></div>
           <div class="step-row"><span class="step-number">3</span><div><strong>Guests / Listed rate</strong><p id="summary-guests-rate">Not specified</p></div></div>
         </div>
-        <div class="stay-note">Booking is available at the moment. Kindly message support if you have any questions.</div>
+        <div class="stay-note">Your reservation request is not confirmed until the resort reviews it and contacts you.</div>
       </aside>
     </main>
     <footer>Cala Laiya Beach Resort</footer>
@@ -184,7 +184,7 @@
         const guests = query.get("guests") || "Not specified";
         const rate = Number(query.get("rate"));
         const rateText = Number.isFinite(rate) && rate > 0 ? `₱${rate.toLocaleString("en-PH")}/night` : "Not specified";
-        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: availability checked; awaiting reservation and payment review.`;
+        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: request submitted; awaiting resort availability and reservation review.`;
         document.getElementById("booking-reference").value = requestReference;
         document.getElementById("summary-reference").textContent = requestReference;
         document.getElementById("summary-room").textContent = roomName;
@@ -246,7 +246,7 @@
             await postToFormspree(
               makeSubmission("Reservation request", `Cala Laiya reservation request — ${requestReference}`),
             );
-            setStatus("booking-status", "Reservation submitted. Choose a payment method to continue.");
+            setStatus("booking-status", "Request submitted. Please wait for the resort to confirm availability before making a payment.");
             paymentOptions.hidden = false;
             paymentOptions.scrollIntoView({ behavior: "smooth", block: "start" });
           } catch (error) {

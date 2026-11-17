@@ -1140,6 +1140,14 @@ main {
   font-size: 42px;
   margin: 5px 0;
 }
+.booking-intro-note {
+  max-width: 560px;
+  margin: 8px 0 0;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-size: 13px;
+}
 .booking-hero .eyebrow {
   color: #f3dfbf;
 }

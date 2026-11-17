@@ -8,6 +8,10 @@ const CLOUD = (version, name) =>
 let imageMap = {};
 let activeHero = 0;
 let activeReview = 0;
+let chosenDates = { checkIn: null, checkOut: null };
+let chosenMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let bookingStage = "dates";
+let selectedGuests = 1;
 let lightboxItems = [];
 let lightboxIndex = 0;
 
@@ -325,9 +329,55 @@ function contactPage() {
 function promotionsPage() {
   return roomsPage("Promotional Accommodation Rates");
 }
-function bookingPage() {
-  return `<main>${pageBanner("Plan your stay", "Reservations & availability", "BOOK CALA LAIYA", IMG("2021/07/banner-room.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Make a reservation request</h2><p>Send your requested stay details to the resort. The team will review availability and contact you to confirm your reservation.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p></div><div class="contact-form"><h2>Ready to continue?</h2><p>Use the secure request form to provide your details. Submitting a request does not confirm a reservation; the resort will follow up.</p><a class="button" href="/payment-instructions.html">Continue to reservation request</a></div></section></main>`;
+function bookingDateKey(date) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
+function bookingDateLabel(date) {
+  return date
+    ? date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : "Select a date";
+}
+function roomChoicesMarkup() {
+  const nights = Math.max(1, Math.round((chosenDates.checkOut - chosenDates.checkIn) / 86400000));
+  return `<div class="room-choice"><div class="room-choice-head"><div><span class="eyebrow copper">YOUR STAY</span><h2>Choose Your Room</h2><p class="muted">${bookingDateLabel(chosenDates.checkIn)} – ${bookingDateLabel(chosenDates.checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"}</p></div><button class="change-dates" type="button" data-change-dates>‹ Change dates</button></div><div class="room-choice-grid">${rooms.map((room) => `<article class="room-choice-card"><a href="/rooms/${room.slug}" class="room-choice-image" aria-label="View ${room.name}">${img(room.image, room.name)}<span>RESORT STAY</span></a><div class="room-choice-copy"><span class="eyebrow copper">${room.name.includes("Villa") ? "PRIVATE POOL VILLA" : "CASITA"}</span><h3>${room.name}</h3><p>${room.beds}</p><p class="room-choice-extra">Includes daily buffet breakfast, lunch, and dinner.</p><p class="room-capacity">Maximum occupancy: ${room.capacity} guests</p><div class="room-choice-price"><strong>${money(room.price)}</strong><small>/ night</small></div><button class="button room-book-button" type="button" data-reserve-room="${room.id}">Continue with this room</button></div></article>`).join("")}</div></div>`;
+}
+function bookingPage() {
+  const query = new URLSearchParams(location.search);
+  if (!chosenDates.checkIn) {
+    const checkIn = query.get("checkin");
+    const checkOut = query.get("checkout");
+    if (checkIn && checkOut) {
+      const start = new Date(`${checkIn}T12:00:00`);
+      const end = new Date(`${checkOut}T12:00:00`);
+      if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime()) && end > start)
+        chosenDates = { checkIn: start, checkOut: end };
+    }
+    const guests = Number(query.get("guests"));
+    if (Number.isInteger(guests) && guests >= 1 && guests <= 20) selectedGuests = guests;
+  }
+  const month = chosenMonth;
+  const first = new Date(month.getFullYear(), month.getMonth(), 1);
+  const dayCount = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const blanks = Array(first.getDay()).fill('<span class="calendar-blank"></span>');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const days = Array.from({ length: dayCount }, (_, index) => {
+    const date = new Date(month.getFullYear(), month.getMonth(), index + 1);
+    const key = bookingDateKey(date);
+    const selected = key === bookingDateKey(chosenDates.checkIn) || key === bookingDateKey(chosenDates.checkOut);
+    const inRange = chosenDates.checkIn && chosenDates.checkOut && date > chosenDates.checkIn && date < chosenDates.checkOut;
+    const past = date < today;
+    return `<button class="calendar-day ${past ? "past" : ""} ${selected ? "selected" : ""} ${inRange ? "in-range" : ""}" data-date="${key}" ${past ? "disabled" : ""}>${index + 1}</button>`;
+  });
+  const canChooseRoom = chosenDates.checkIn && chosenDates.checkOut && chosenDates.checkOut > chosenDates.checkIn;
+  const step = bookingStage === "rooms" ? 1 : 0;
+  return `<main><section class="booking-hero" style="background-image:linear-gradient(90deg,rgba(8,24,30,.62),rgba(8,24,30,.14)),url('${asset("https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920")}')"><div><span class="eyebrow">RESERVATIONS</span><h1>Book Your Stay</h1><p class="booking-intro-note">Choose your stay dates and room. The resort will confirm availability after reviewing your request.</p></div></section><div class="booking-steps"><span class="${step === 0 ? "current" : ""}"><b>1</b>Select Dates</span><span class="${step === 1 ? "current" : ""}"><b>2</b>Choose Room</span></div>${bookingStage === "rooms" && canChooseRoom ? `<section class="booking-body room-results">${roomChoicesMarkup()}</section>` : `<section class="booking-body"><div><h2>Select Your Dates</h2><p class="muted">Choose your check-in and check-out dates. Availability will be confirmed by the resort.</p><div class="calendar-head"><button type="button" data-month="prev" aria-label="Previous month">‹</button><div><span class="eyebrow copper">${chosenDates.checkIn && !chosenDates.checkOut ? "SELECT CHECK-OUT DATE" : "SELECT CHECK-IN DATE"}</span><h3>${month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</h3></div><button type="button" data-month="next" aria-label="Next month">›</button></div><div class="calendar-grid">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => `<span class="day-name">${day}</span>`).join("")}${[...blanks, ...days].join("")}</div><div class="calendar-legend"><span><i class="legend-selected"></i>Selected</span><span><i class="legend-range"></i>Your stay</span><span><i class="legend-past"></i>Past</span></div></div><aside class="trip-card"><h3>Your Stay</h3><div><small>CHECK-IN</small><strong>${bookingDateLabel(chosenDates.checkIn)}</strong></div><div><small>CHECK-OUT</small><strong>${bookingDateLabel(chosenDates.checkOut)}</strong></div><label for="guests">NUMBER OF GUESTS<select id="guests">${Array.from({ length: 20 }, (_, index) => `<option value="${index + 1}" ${index + 1 === selectedGuests ? "selected" : ""}>${index + 1} ${index === 0 ? "guest" : "guests"}</option>`).join("")}</select></label><button class="button booking-choose" type="button" ${canChooseRoom ? "" : "disabled"}>CHOOSE YOUR ROOM <span>›</span></button></aside></section>`}</main>`;
+}
+
 function render() {
   const pageParam = new URLSearchParams(location.search).get("page");
   const routeFromQuery = pageParam
@@ -410,6 +460,53 @@ function bindEvents() {
       lightboxItems = [activities[Number(b.dataset.activity)].image];
       lightboxIndex = 0;
       showLightbox();
+    }),
+  );
+  document.querySelector('[data-month="prev"]')?.addEventListener("click", () => {
+    chosenMonth = new Date(chosenMonth.getFullYear(), chosenMonth.getMonth() - 1, 1);
+    render();
+  });
+  document.querySelector('[data-month="next"]')?.addEventListener("click", () => {
+    chosenMonth = new Date(chosenMonth.getFullYear(), chosenMonth.getMonth() + 1, 1);
+    render();
+  });
+  document.querySelectorAll(".calendar-day:not(.past)").forEach((button) =>
+    button.addEventListener("click", () => {
+      const date = new Date(`${button.dataset.date}T12:00:00`);
+      if (!chosenDates.checkIn || chosenDates.checkOut || date <= chosenDates.checkIn) {
+        chosenDates = { checkIn: date, checkOut: null };
+        bookingStage = "dates";
+      } else {
+        chosenDates.checkOut = date;
+      }
+      render();
+    }),
+  );
+  document.querySelector("#guests")?.addEventListener("change", (event) => {
+    selectedGuests = Number(event.currentTarget.value || 1);
+  });
+  document.querySelector(".booking-choose")?.addEventListener("click", () => {
+    selectedGuests = Number(document.querySelector("#guests")?.value || selectedGuests || 1);
+    bookingStage = "rooms";
+    render();
+  });
+  document.querySelector("[data-change-dates]")?.addEventListener("click", () => {
+    bookingStage = "dates";
+    render();
+  });
+  document.querySelectorAll("[data-reserve-room]").forEach((button) =>
+    button.addEventListener("click", () => {
+      const room = rooms.find((item) => item.id === button.dataset.reserveRoom);
+      if (!room || !chosenDates.checkIn || !chosenDates.checkOut) return;
+      const params = new URLSearchParams({
+        roomId: room.id,
+        roomName: room.name,
+        checkIn: bookingDateKey(chosenDates.checkIn),
+        checkOut: bookingDateKey(chosenDates.checkOut),
+        guests: String(selectedGuests),
+        rate: String(room.price),
+      });
+      window.location.href = `/payment-instructions.html?${params.toString()}`;
     }),
   );
   const form = document.querySelector("#contact-form");
