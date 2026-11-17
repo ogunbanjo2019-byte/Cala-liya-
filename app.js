@@ -547,6 +547,13 @@ function bookingDateLabel(d) {
       })
     : "—";
 }
+function bookingDateKey(d) {
+  if (!d) return "";
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 function roomChoicesMarkup() {
   const nights =
     chosenDates.checkIn && chosenDates.checkOut
@@ -578,13 +585,13 @@ function bookingPage() {
     .concat(
       Array.from({ length: days }, (_, i) => {
         const d = new Date(month.getFullYear(), month.getMonth(), i + 1);
-        const key = d.toISOString().slice(0, 10);
+        const key = bookingDateKey(d);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const disabled = d < today;
         const selected =
-          (chosenDates.checkIn && key === chosenDates.checkIn.toISOString().slice(0, 10)) ||
-          (chosenDates.checkOut && key === chosenDates.checkOut.toISOString().slice(0, 10));
+          (chosenDates.checkIn && key === bookingDateKey(chosenDates.checkIn)) ||
+          (chosenDates.checkOut && key === bookingDateKey(chosenDates.checkOut));
         const inRange =
           chosenDates.checkIn &&
           chosenDates.checkOut &&
@@ -828,17 +835,11 @@ function showRoomBookingModal(room) {
     if (e.target === dialog) close();
   });
   dialog.querySelector(".room-modal-book").onclick = () => {
-    const localDate = (date) =>
-      date
-        ? new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-            .toISOString()
-            .slice(0, 10)
-        : "";
     const params = new URLSearchParams({
       roomId: room.id,
       roomName: room.name,
-      checkIn: localDate(chosenDates.checkIn),
-      checkOut: localDate(chosenDates.checkOut),
+      checkIn: bookingDateKey(chosenDates.checkIn),
+      checkOut: bookingDateKey(chosenDates.checkOut),
       guests: String(selectedGuests || 1),
       rate: String(room.price),
     });
