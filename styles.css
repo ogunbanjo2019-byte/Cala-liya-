@@ -2527,25 +2527,107 @@ main {
   }
 }
 
-/* Welcome offer shown on the visitor's first page view in a browser session. */
-.welcome-promo-book {
-  width: 100%;
-  min-height: 42px;
-  justify-content: center;
-  margin-top: 17px;
-  font-size: 9px;
-  letter-spacing: 0.1em;
+/* First-visit welcome offer popup */
+.welcome-offer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(8, 20, 25, 0.68);
 }
-.welcome-promo-rooms {
+.welcome-offer-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  width: min(820px, 100%);
+  min-height: 390px;
+  overflow: hidden;
+  background: #fbf8f1;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+}
+.welcome-offer-copy {
+  align-self: center;
+  padding: clamp(28px, 5vw, 54px);
+}
+.welcome-offer-copy h2 {
+  margin: 14px 0;
+  font-size: clamp(32px, 4vw, 46px);
+}
+.welcome-offer-copy > p {
+  color: #697273;
+  font-size: 13px;
+}
+.welcome-offer-rate {
+  margin: 20px 0 5px;
+}
+.welcome-offer-rate strong {
+  color: var(--sand);
+  font: 500 27px var(--serif);
+}
+.welcome-offer-rate span {
+  color: #777;
+  font-size: 11px;
+}
+.welcome-offer-copy .welcome-offer-note {
+  margin: 0 0 16px;
+  font-size: 10px;
+}
+.welcome-offer-book {
   width: 100%;
-  margin-top: 14px;
-  border: 0;
-  background: transparent;
+  min-height: 44px;
+  margin-top: 7px;
+}
+.welcome-offer-room {
+  display: block;
+  margin-top: 15px;
   color: #86643f;
-  cursor: pointer;
-  font: inherit;
   font-size: 9px;
+  font-weight: 700;
   letter-spacing: 0.12em;
+  text-align: center;
+}
+.welcome-offer-photo {
+  position: relative;
+  min-height: 390px;
+}
+.welcome-offer-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.welcome-offer-close {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
 }
 @media (max-width: 680px) {
+  .welcome-offer-card {
+    grid-template-columns: 1fr;
+    width: min(460px, 100%);
   }
+  .welcome-offer-copy {
+    order: 2;
+    padding: 25px 26px 30px;
+  }
+  .welcome-offer-photo {
+    order: 1;
+    min-height: 210px;
+    max-height: 230px;
+  }
+  .welcome-offer-copy h2 {
+    font-size: 32px;
+  }
+}

@@ -627,6 +627,42 @@ function mountGuestHelp() {
     input.value = "";
   };
 }
+function showWelcomeOffer() {
+  try {
+    if (window.sessionStorage.getItem("calaWelcomeOfferDismissed")) return;
+  } catch {
+    // Continue without session storage; this offer is shown only once during this page load.
+  }
+  const room = rooms[0];
+  const overlay = document.createElement("div");
+  overlay.className = "welcome-offer-overlay";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-labelledby", "welcome-offer-title");
+  overlay.innerHTML = `<section class="welcome-offer-card"><div class="welcome-offer-copy"><span class="eyebrow copper">A WARM WELCOME TO CALA LAIYA</span><h2 id="welcome-offer-title">Make time for the coast.</h2><p>Settle into a Garden Casita and enjoy a relaxing seaside stay.</p><p class="welcome-offer-rate"><strong>${money(room.price)}</strong> <span>/ night</span></p><p class="welcome-offer-note">Listed rate; the resort will confirm availability and final details.</p><a class="button welcome-offer-book" href="/booking">PLAN YOUR STAY</a><a class="welcome-offer-room" href="/rooms/${room.slug}">VIEW GARDEN CASITA</a></div><div class="welcome-offer-photo">${img(room.image, "Garden Casita at Cala Laiya")}<button class="welcome-offer-close" type="button" aria-label="Close welcome offer">×</button></div></section>`;
+  document.body.append(overlay);
+  const close = () => {
+    try {
+      window.sessionStorage.setItem("calaWelcomeOfferDismissed", "1");
+    } catch {
+      // Dismiss for this page view even if storage is unavailable.
+    }
+    overlay.remove();
+  };
+  overlay.querySelector(".welcome-offer-close").addEventListener("click", close);
+  overlay.querySelectorAll("a").forEach((anchor) =>
+    anchor.addEventListener("click", (event) => {
+      event.preventDefault();
+      const destination = anchor.getAttribute("href");
+      close();
+      navigate(destination);
+    }),
+  );
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) close();
+  });
+  overlay.querySelector(".welcome-offer-close").focus();
+}
 async function init() {
   try {
     imageMap = await fetch("/assets/image-map.json").then((r) => (r.ok ? r.json() : {}));
@@ -635,11 +671,13 @@ async function init() {
   }
   render();
   mountGuestHelp();
+  window.setTimeout(showWelcomeOffer, 900);
 }
 window.addEventListener("popstate", render);
 window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     document.querySelector(".lightbox")?.remove();
+    document.querySelector(".welcome-offer-close")?.click();
   }
   if (document.querySelector(".lightbox") && e.key === "ArrowRight") {
     lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
