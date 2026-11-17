@@ -1,0 +1,76 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "title": "Home"
+    },
+    {
+      "path": "/about",
+      "title": "About"
+    },
+    {
+      "path": "/rooms",
+      "title": "Rooms"
+    },
+    {
+      "path": "/rooms/promos",
+      "title": "Accommodation"
+    },
+    {
+      "path": "/rooms/:slug",
+      "title": "Room Details"
+    },
+    {
+      "path": "/rooms/luxury-pool-villa-3br",
+      "title": "Luxury Pool Villa 3BR"
+    },
+    {
+      "path": "/rooms/luxury-pool-villa-7br",
+      "title": "Luxury Pool Villa 7BR"
+    },
+    {
+      "path": "/rooms/luxury-pool-villa-5br",
+      "title": "Luxury Pool Villa 5BR"
+    },
+    {
+      "path": "/rooms/luxury-pool-villa-1br",
+      "title": "Luxury Pool Villa 1BR"
+    },
+    {
+      "path": "/rooms/two-bedroom-casita",
+      "title": "Two Bedroom Casita"
+    },
+    {
+      "path": "/rooms/three-bedroom-casita",
+      "title": "Three Bedroom Casita"
+    },
+    {
+      "path": "/rooms/garden-casita-premier",
+      "title": "Garden Casita Premier"
+    },
+    {
+      "path": "/rooms/three-bedroom-premiere",
+      "title": "Three Bedroom Premiere"
+    },
+    {
+      "path": "/rooms/garden-casita",
+      "title": "Garden Casita"
+    },
+    {
+      "path": "/activities",
+      "title": "Activities"
+    },
+    {
+      "path": "/gallery",
+      "title": "Gallery"
+    },
+    {
+      "path": "/contact",
+      "title": "Contact"
+    },
+    {
+      "path": "/booking",
+      "title": "Book Now"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/rooms", "destination": "/index.html" },
+    { "source": "/rooms/promos", "destination": "/index.html" },
+    { "source": "/rooms/:path*", "destination": "/index.html" },
+    { "source": "/activities", "destination": "/index.html" },
+    { "source": "/gallery", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/booking", "destination": "/index.html" },
+    { "source": "/booking/continue", "destination": "/index.html" }
+  ]
+}
