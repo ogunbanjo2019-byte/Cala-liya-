@@ -504,7 +504,7 @@ function galleryPage() {
   return `<main>${pageBanner("GALLERY", "", "", IMG("2021/07/DSC_0967-min-scaled.jpg"))}<section class="gallery-grid">${gallery.map((g, i) => `<button class="gallery-item" data-lightbox="${i}">${img(g.image, g.alt)}<span>+</span></button>`).join("")}</section></main>`;
 }
 function contactPage() {
-  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Email Us</h2><p>We are eager to hear from you, please fill in your contact information and one of our staff members will contact you shortly.</p><label>FULL NAME<input name="name" type="text" required autocomplete="name"></label><div class="form-pair"><label>GMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" placeholder="name@gmail.com" pattern="[A-Za-z0-9._%+-]+@gmail\.com" title="Enter a valid Gmail address ending in @gmail.com"></label><small class="field-hint">We’ll email a one-time code to confirm you can access this Gmail inbox.</small><div class="email-verify-row"><button type="button" class="verify-code-button" data-send-code>Send verification code</button><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span></div><div class="email-code-row" data-code-row hidden><input name="verificationCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" aria-label="Email verification code"><button type="button" class="verify-code-button" data-verify-code>Verify code</button></div><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel"></label></div><label>MESSAGE<textarea name="message" rows="6" required></textarea></label><p class="small-note">* All fields are required</p><button type="submit" class="button" data-send-inquiry disabled>SEND INQUIRY</button></form></section></main>`;
+  return `<main>${pageBanner("Get in touch", "Inquiries & questions", "Contact Us", IMG("2022/09/IMG_0124-1.jpg"))}<section class="contact-section"><div class="contact-details"><h2>Cala Laiya</h2><p>Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.</p><p><strong>Phone:</strong> <a href="tel:+6309512472881">${PHONE}</a></p><p><a href="mailto:${EMAIL}">${EMAIL}</a></p><h3>Amenities:</h3><ul>${["Free parking", "Pool", "Bar / Lounge", "Restaurant", "Beach", "Children Activities", "Pet Accepted", "Non-motorized water sport activities"].map((x) => `<li>${x}</li>`).join("")}</ul></div><form class="contact-form" id="contact-form"><h2>Email Us</h2><p>We are eager to hear from you. Fill in your contact information and our team will get back to you.</p><input type="hidden" name="requestType" value="Contact inquiry"><input type="hidden" name="_subject" value="Cala Laiya Contact Inquiry"><label>FULL NAME<input name="name" type="text" required autocomplete="name"></label><label>EMAIL ADDRESS<input name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label><label>CONTACT NO.<input name="phone" type="tel" required autocomplete="tel"></label><label>MESSAGE<textarea name="message" rows="6" required></textarea></label><p class="small-note">* All fields are required. Your message will be sent to the resort.</p><span class="contact-status" id="contact-status" role="status" aria-live="polite"></span><button type="submit" class="button" data-send-inquiry>SEND INQUIRY</button></form></section></main>`;
 }
 function promotionsPage() {
   const promos = [
@@ -718,101 +718,44 @@ function bindEvents() {
   );
   const form = document.querySelector("#contact-form");
   if (form) {
-    const emailInput = form.querySelector('[name="email"]'),
-      codeRow = form.querySelector("[data-code-row]"),
-      codeInput = form.querySelector('[name="verificationCode"]'),
-      status = form.querySelector("#contact-status"),
-      sendInquiry = form.querySelector("[data-send-inquiry]"),
-      sendCode = form.querySelector("[data-send-code]"),
-      verifyCode = form.querySelector("[data-verify-code]");
-    let verifiedEmail = "";
+    const button = form.querySelector("[data-send-inquiry]");
+    const status = form.querySelector("#contact-status");
     const setStatus = (message, error = false) => {
       status.textContent = message;
       status.classList.toggle("is-error", error);
     };
-    const request = async (url, payload) => {
-      const base = String(window.CALA_API_BASE_URL || "")
-        .trim()
-        .replace(/\/+$/, "");
-      if (!base)
-        throw new Error(
-          "The email API URL is not set. Add your Render service URL to api-config.js.",
-        );
-      const response = await fetch(`${base}${url}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json().catch(() => ({ error: "Unexpected server response." }));
-      if (!response.ok) throw new Error(result.error || "Request failed.");
-      return result;
-    };
-    emailInput.addEventListener("input", () => {
-      verifiedEmail = "";
-      sendInquiry.disabled = true;
-      codeRow.hidden = true;
-      codeInput.value = "";
-      verifyCode.textContent = "Verify code";
-      setStatus("");
-    });
-    sendCode.addEventListener("click", async () => {
-      const email = emailInput.value.trim().toLowerCase();
-      if (!emailInput.reportValidity()) return;
-      sendCode.disabled = true;
-      setStatus("Sending a code to your Gmail…");
-      try {
-        const result = await request("/api/send-verification", { email });
-        codeRow.hidden = false;
-        codeInput.focus();
-        setStatus(result.message);
-      } catch (error) {
-        setStatus(error.message, true);
-      } finally {
-        sendCode.disabled = false;
-      }
-    });
-    verifyCode.addEventListener("click", async () => {
-      const email = emailInput.value.trim().toLowerCase(),
-        code = codeInput.value.trim();
-      verifyCode.disabled = true;
-      setStatus("Checking your code…");
-      try {
-        const result = await request("/api/verify-code", { email, code });
-        verifiedEmail = email;
-        sendInquiry.disabled = false;
-        verifyCode.textContent = "Verified";
-        setStatus(result.message);
-      } catch (error) {
-        setStatus(error.message, true);
-      } finally {
-        verifyCode.disabled = false;
-      }
-    });
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = new FormData(form),
-        email = emailInput.value.trim().toLowerCase();
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
       if (!form.reportValidity()) return;
-      if (verifiedEmail !== email) {
-        setStatus("Verify this Gmail inbox before sending your inquiry.", true);
+      const endpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
+      if (!endpoint) {
+        setStatus("The Formspree endpoint is not configured.", true);
         return;
       }
-      sendInquiry.disabled = true;
+      const data = new FormData(form);
+      data.set("requestType", "Contact inquiry");
+      data.set("_subject", "Cala Laiya Contact Inquiry");
+      button.disabled = true;
       setStatus("Sending your inquiry…");
       try {
-        const result = await request("/api/contact", {
-          name: data.get("name"),
-          email,
-          phone: data.get("phone"),
-          message: data.get("message"),
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: data,
         });
-        setStatus(result.message);
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok)
+          throw new Error(
+            result.errors?.map((item) => item.message).filter(Boolean).join(" ") ||
+              result.error ||
+              "Could not send your inquiry. Please try again later.",
+          );
+        setStatus("Your inquiry was sent to the resort.");
         form.reset();
-        verifiedEmail = "";
-        codeRow.hidden = true;
       } catch (error) {
-        setStatus(error.message, true);
-        sendInquiry.disabled = false;
+        setStatus(error.message || "Could not send your inquiry. Please try again later.", true);
+      } finally {
+        button.disabled = false;
       }
     });
   }

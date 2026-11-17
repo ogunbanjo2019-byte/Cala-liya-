@@ -141,7 +141,7 @@
     <script>
       (() => {
         const details = window.CALA_PAYMENT_DETAILS || {};
-        const apiBase = String(window.CALA_API_BASE_URL || "").trim().replace(/\/+$/, "");
+        const formEndpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
         const query = new URLSearchParams(window.location.search);
         const requestRefKey = `calaManualRequestReference:${query.toString()}`;
         let requestReference;
@@ -185,15 +185,28 @@
           staySummary,
           consent: document.getElementById("booking-consent").checked,
         });
-        async function postJson(path, payload) {
-          if (!apiBase) throw new Error("Email notifications are not configured yet. Please contact the resort.");
-          const response = await fetch(`${apiBase}/api/${path}`, {
+        function makeSubmission(requestType, subject) {
+          const formData = new FormData();
+          formData.append("requestType", requestType);
+          formData.append("_subject", subject);
+          for (const [key, value] of Object.entries(detailsPayload()))
+            formData.append(key, typeof value === "boolean" ? (value ? "Yes" : "No") : String(value ?? ""));
+          return formData;
+        }
+        async function postToFormspree(formData) {
+          if (!formEndpoint) throw new Error("The Formspree form endpoint is not configured.");
+          const response = await fetch(formEndpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
+            headers: { Accept: "application/json" },
+            body: formData,
           });
           const result = await response.json().catch(() => ({}));
-          if (!response.ok) throw new Error(result.error || "Could not send the notification. Please try again later.");
+          if (!response.ok)
+            throw new Error(
+              result.errors?.map((item) => item.message).filter(Boolean).join(" ") ||
+                result.error ||
+                "Could not send the notification. Please try again later.",
+            );
           return result;
         }
         bookingForm.addEventListener("submit", async (event) => {
@@ -203,7 +216,9 @@
           button.disabled = true;
           setStatus("booking-status", "Sending your reservation request to the resort…");
           try {
-            await postJson("booking-notification", detailsPayload());
+            await postToFormspree(
+              makeSubmission("Manual reservation request", `Manual reservation request — ${requestReference}`),
+            );
             proofStep.hidden = false;
             setStatus("booking-status", "Request sent. Wait for the resort to confirm availability before transferring. You can upload proof after payment.");
             proofStep.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -225,19 +240,10 @@
           button.disabled = true;
           setStatus("proof-status", "Sending payment proof to the resort…");
           try {
-            const fileBase64 = await new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
-              reader.onerror = () => reject(new Error("Could not read that file."));
-              reader.readAsDataURL(file);
-            });
-            await postJson("payment-proof", {
-              ...detailsPayload(),
-              proofConsent: document.getElementById("proof-consent").checked,
-              fileName: file.name,
-              mimeType: file.type,
-              fileBase64,
-            });
+            const submission = makeSubmission("Payment proof upload", `Payment proof upload — ${requestReference}`);
+            submission.set("proofConsent", document.getElementById("proof-consent").checked ? "Yes" : "No");
+            submission.append("paymentProof", file, file.name);
+            await postToFormspree(submission);
             setStatus("proof-status", "Payment proof sent to the resort. Keep your original receipt until your reservation is confirmed.");
             form.reset();
           } catch (error) {
