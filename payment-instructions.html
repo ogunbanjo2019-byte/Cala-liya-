@@ -132,7 +132,8 @@
           <div class="step-row"><span class="step-number">1</span><div><strong>Room</strong><p id="summary-room">Not specified</p></div></div>
           <div class="step-row"><span class="step-number">2</span><div><strong>Check-in / Check-out</strong><p id="summary-dates">Not specified</p></div></div>
           <div class="step-row"><span class="step-number">3</span><div><strong>Guests / Listed rate</strong><p id="summary-guests-rate">Not specified</p></div></div>
-        </div>      
+        </div>
+        <div class="stay-note">Please wait for the resort to confirm availability before making payment.</div>
       </aside>
     </main>
     <footer>Cala Laiya Beach Resort</footer>
@@ -159,7 +160,7 @@
         const guests = query.get("guests") || "Not specified";
         const rate = Number(query.get("rate"));
         const rateText = Number.isFinite(rate) && rate > 0 ? `₱${rate.toLocaleString("en-PH")}/night` : "Not specified";
-        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. This is a manual request, not a confirmed booking.`;
+        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: awaiting confirmation from the resort.`;
         document.getElementById("booking-reference").value = requestReference;
         document.getElementById("summary-reference").textContent = requestReference;
         document.getElementById("summary-room").textContent = roomName;
@@ -216,7 +217,7 @@
           setStatus("booking-status", "Sending your reservation request to the resort…");
           try {
             await postToFormspree(
-              makeSubmission("Manual reservation request", `Manual reservation request — ${requestReference}`),
+              makeSubmission("Reservation request", `Cala Laiya reservation request — ${requestReference}`),
             );
             proofStep.hidden = false;
             setStatus("booking-status", "Request sent. Wait for the resort to confirm availability before transferring. You can upload proof after payment.");
