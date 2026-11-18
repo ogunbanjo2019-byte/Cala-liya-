@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f4ec" />
-    <meta name="description" content="Cala Laiya bank transfer payment instructions." />
-    <title>Bank Transfer Details | Cala Laiya</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="theme-color" content="#f7f4ec" />
+      <meta name="description" content="Check availability and reserve a stay at Cala Laiya Beach Resort." />
+      <title>Reserve Your Stay | Cala Laiya</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
       :root { color-scheme: light; --ink: #102632; --deep: #10232f; --sea: #145360; --sand: #a77b4a; --gold: #c9a568; --cream: #f8f1e5; --paper: #fff; --muted: #858984; --line: #e9e5de; --serif: "Cormorant Garamond", Georgia, serif; --sans: "Manrope", Arial, sans-serif; }
       * { box-sizing: border-box; }
@@ -41,6 +41,11 @@
       .method-choice { width: min(100%, 300px); border: 0; text-align: left; cursor: pointer; }
       .method-choice:hover { background: #103f49; }
       .availability-caveat { margin: 8px 0 0; color: #777d79; font-size: 11px; line-height: 1.6; }
+      .stay-date-line { margin: 0 0 4px; color: #777d79; font-size: 12px; line-height: 1.6; }
+      .stay-date-line strong { color: #263437; font-weight: 600; }
+      .availability-result { margin-top: 17px; padding: 16px 18px; border: 1px solid #d7e6da; border-left: 3px solid #436b4d; background: #f2f7f2; color: #365b3f; font-size: 13px; line-height: 1.7; }
+      .availability-result p { margin: 0; }
+      .availability-result a { color: #145360; font-weight: 700; text-decoration: underline; }
       [hidden] { display: none !important; }
       .method-title { display: block; font-size: 14px; font-weight: 600; line-height: 1.4; }
       .method-subtitle { margin-top: 2px; color: #d7e7e6; font-size: 12px; }
@@ -89,13 +94,18 @@
         <section class="panel availability-panel" aria-labelledby="availability-title">
           <div class="eyebrow">Availability check</div>
           <h1 id="availability-title">Check your stay</h1>
-          <p class="muted">Send your requested stay details to Cala Laiya. The resort will review availability and contact you to confirm your reservation.</p>
-          <p class="availability-caveat">Availability is not confirmed until the resort has reviewed your request and contacted you.</p>
+          <p class="muted">Check availability for your selected room and dates.</p>
+          <p class="stay-date-line">Selected dates: <strong id="availability-dates">Not specified</strong></p>
+          <button class="submit" id="check-availability" type="button" aria-expanded="false" aria-controls="availability-result guest-details-panel">CHECK AVAILABILITY</button>
+          <div class="availability-result" id="availability-result" role="status" aria-live="polite" hidden>
+            <p>Available for your selected dates. Kindly <a href="https://wa.me/6309512472881" target="_blank" rel="noopener">message our support</a> if you have any question.</p>
+          </div>
+          <div class="status" id="availability-status" role="status" aria-live="polite"></div>
         </section>
-        <section class="panel" aria-labelledby="guest-title">
+        <section class="panel" id="guest-details-panel" aria-labelledby="guest-title" hidden>
           <div class="eyebrow">Guest details</div>
           <h2 id="guest-title">Reserve your stay</h2>
-          <p class="muted">Enter your details and click Reserve to send your request. Payment instructions will be provided after the resort reviews your request.</p>
+          <p class="muted">Enter your details and click Reserve to send your request. Payment details will appear after your request is submitted.</p>
           <form id="booking-form">
             <div class="form-grid">
               <div><label for="guest-name">Guest name *</label><input id="guest-name" name="name" autocomplete="name" maxlength="120" required /></div>
@@ -190,11 +200,24 @@
         document.getElementById("summary-room").textContent = roomName;
         document.getElementById("summary-dates").textContent = `${checkIn} / ${checkOut}`;
         document.getElementById("summary-guests-rate").textContent = `${guests} / ${rateText}`;
+        const formatStayDate = (value) => {
+          const date = new Date(`${value}T12:00:00`);
+          return Number.isNaN(date.getTime())
+            ? value
+            : date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        };
+        document.getElementById("availability-dates").textContent =
+          checkIn !== "Not specified" && checkOut !== "Not specified"
+            ? `${formatStayDate(checkIn)} – ${formatStayDate(checkOut)}`
+            : "Not specified";
         document.getElementById("account-number").textContent = details.accountNumber || "Not configured";
         document.getElementById("account-name").textContent = details.accountName || "Not configured";
         document.getElementById("bank-name").textContent = details.bank || "Not configured";
         document.getElementById("instructions").textContent = details.instructions || "Please contact the resort for payment instructions.";
         const bookingForm = document.getElementById("booking-form");
+        const availabilityButton = document.getElementById("check-availability");
+        const availabilityResult = document.getElementById("availability-result");
+        const guestDetailsPanel = document.getElementById("guest-details-panel");
         const proofStep = document.getElementById("proof-step");
         const paymentOptions = document.getElementById("payment-options");
         const cardUnavailable = document.getElementById("card-unavailable");
@@ -204,6 +227,17 @@
           node.textContent = text;
           node.style.color = isError ? "#a33b32" : "#436b4d";
         };
+        availabilityButton.addEventListener("click", () => {
+          if (checkIn === "Not specified" || checkOut === "Not specified") {
+            setStatus("availability-status", "Please select your check-in and check-out dates on the booking page first.", true);
+            return;
+          }
+          // Frontend preview interaction; connect this status to the resort availability API when supplied.
+          availabilityResult.hidden = false;
+          guestDetailsPanel.hidden = false;
+          availabilityButton.setAttribute("aria-expanded", "true");
+          guestDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
         const detailsPayload = () => ({
           name: document.getElementById("guest-name").value.trim(),
           email: document.getElementById("guest-email").value.trim(),
@@ -246,9 +280,9 @@
             await postToFormspree(
               makeSubmission("Reservation request", `Cala Laiya reservation request — ${requestReference}`),
             );
-            setStatus("booking-status", "Request submitted. Please wait for the resort to confirm availability before making a payment.");
-            paymentOptions.hidden = false;
-            paymentOptions.scrollIntoView({ behavior: "smooth", block: "start" });
+            setStatus("booking-status", "Reservation request submitted. Please wait for the resort’s final confirmation before making a payment.");
+            paymentOptions.hidden = true;
+            showBankTransfer();
           } catch (error) {
             setStatus("booking-status", error.message, true);
           } finally {
@@ -295,4 +329,3 @@
     </script>
   </body>
 </html>
-  
