@@ -1111,22 +1111,6 @@ main {
 .contact-form .small-note {
   font-size: 10px;
 }
-.whatsapp-float {
-  position: fixed;
-  left: 16px;
-  bottom: 18px;
-  z-index: 900;
-  border-radius: 50%;
-  width: 47px;
-  height: 47px;
-  background: #19bd6a;
-  color: #fff;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 2px 10px #0002;
-  font-size: 26px;
-  border: 3px solid #fff;
-}
 .booking-hero {
   height: 300px;
   background-size: cover;
@@ -1801,12 +1785,6 @@ main {
   }
   .footer-grid h3 {
     font-size: 9px;
-  }
-  .whatsapp-float {
-    left: 12px;
-    bottom: 12px;
-    width: 44px;
-    height: 44px;
   }
 }
 @media (max-width: 390px) {
