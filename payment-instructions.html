@@ -46,6 +46,21 @@
       .availability-result { margin-top: 17px; padding: 16px 18px; border: 1px solid #d7e6da; border-left: 3px solid #436b4d; background: #f2f7f2; color: #365b3f; font-size: 13px; line-height: 1.7; }
       .availability-result p { margin: 0; }
       .availability-result a { color: #145360; font-weight: 700; text-decoration: underline; }
+
+      .availability-result p + p { margin-top: 9px; }
+      .review-lines { margin: 20px 0 12px; border-top: 1px solid #e9e5de; }
+      .review-line { display: flex; justify-content: space-between; gap: 18px; padding: 11px 0; border-bottom: 1px solid #eeece8; font-size: 13px; }
+      .review-line span { color: #777d79; }
+      .review-line strong { color: #263437; text-align: right; overflow-wrap: anywhere; }
+      .review-total { margin-top: 4px; padding-top: 15px; font-size: 16px; }
+      .review-total span, .review-total strong { color: #145360; font-weight: 700; }
+      .review-note { color: #777d79; font-size: 11px; line-height: 1.6; }
+      .review-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .review-actions button { flex: 1 1 150px; }
+      .review-actions .secondary { background: #fff; border: 1px solid #145360; color: #145360; }
+      .choice-panel:not([hidden]) { position: fixed; z-index: 110; inset: 50% auto auto 50%; transform: translate(-50%, -50%); width: min(720px, calc(100% - 32px)); max-height: calc(100vh - 32px); overflow: auto; box-shadow: 0 24px 70px rgba(16,35,47,.25); }
+      .choice-panel:not([hidden])::before { content: ""; position: fixed; z-index: -1; inset: -100vh -100vw; background: rgba(16,35,47,.62); }
+      @media (max-width: 500px) { .review-line { display: grid; gap: 4px; } .review-line strong { text-align: left; } }
       [hidden] { display: none !important; }
       .receipt-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(16,35,47,.58); }
       .receipt-modal[hidden] { display: none; }
@@ -114,7 +129,9 @@
           <p class="stay-date-line">Selected dates: <strong id="availability-dates">Not specified</strong></p>
           <button class="submit" id="check-availability" type="button" aria-expanded="false" aria-controls="availability-result guest-details-panel">CHECK AVAILABILITY</button>
           <div class="availability-result" id="availability-result" role="status" aria-live="polite" hidden>
-            <p>Available for your selected dates. If you have any questions, email <a href="mailto:reservations@calalaiyabeach-resort.com">reservations@calalaiyabeach-resort.com</a>.</p>
+            <p><strong>Your selected dates are currently available for booking.</strong> Kindly proceed with your reservation to secure your preferred dates.</p>
+            <p>Should you have any questions or require further assistance, please feel free to message our support team. We are available 24/7 to assist you.</p>
+            <p><a href="https://wa.me/639621092624" target="_blank" rel="noopener noreferrer">Message our support team on WhatsApp: +63 962 109 2624</a></p>
           </div>
           <div class="status" id="availability-status" role="status" aria-live="polite"></div>
         </section>
@@ -129,14 +146,38 @@
               <div><label for="guest-phone">Phone *</label><input id="guest-phone" name="phone" type="tel" autocomplete="tel" maxlength="80" required /></div>
               <div><label for="booking-reference">Request reference</label><input id="booking-reference" name="bookingReference" maxlength="100" readonly required /></div>
             </div>
-            <label class="consent"><input id="booking-consent" type="checkbox" required /><span>I agree to send these details and my requested stay information to Cala Laiya for an availability check.</span></label>
+            <label class="consent"><input id="booking-consent" type="checkbox" required /><span>I agree to send these details and my requested stay information to Cala Laiya so the resort can process my reservation request.</span></label>
             <button class="submit" type="submit" id="booking-submit">RESERVE</button>
             <div class="status" id="booking-status" role="status" aria-live="polite"></div>
           </form>
         </section>
-        <section class="panel choice-panel" id="payment-options" aria-labelledby="payment-choice-title" hidden>
+        <section class="panel review-panel" id="booking-review" aria-labelledby="booking-review-title" hidden>
+          <div class="eyebrow">Review before submitting</div>
+          <h2 id="booking-review-title">Confirm your reservation details</h2>
+          <p class="muted">Please check the guest information and estimated stay total below before confirming.</p>
+          <div class="review-lines">
+            <div class="review-line"><span>Guest name</span><strong id="review-name"></strong></div>
+            <div class="review-line"><span>Email</span><strong id="review-email"></strong></div>
+            <div class="review-line"><span>Phone</span><strong id="review-phone"></strong></div>
+            <div class="review-line"><span>Request reference</span><strong id="review-reference"></strong></div>
+            <div class="review-line"><span>Room</span><strong id="review-room"></strong></div>
+            <div class="review-line"><span>Stay dates</span><strong id="review-dates"></strong></div>
+            <div class="review-line"><span>Guests</span><strong id="review-guests"></strong></div>
+            <div class="review-line"><span>Rate per night</span><strong id="review-rate"></strong></div>
+            <div class="review-line"><span>Number of nights</span><strong id="review-nights"></strong></div>
+            <div class="review-line review-total"><span>Estimated total</span><strong id="review-total"></strong></div>
+          </div>
+          <p class="review-note">Estimated total is based on the listed room rate multiplied by the number of nights. Any additional charges and final availability must be confirmed by the resort.</p>
+          <div class="review-actions">
+            <button class="submit secondary" id="edit-booking" type="button">EDIT DETAILS</button>
+            <button class="submit" id="confirm-booking" type="button">CONFIRM</button>
+          </div>
+          <div class="status" id="review-status" role="status" aria-live="polite"></div>
+        </section>
+        <section class="panel choice-panel" id="payment-options" aria-labelledby="payment-choice-title" role="dialog" aria-modal="true" hidden>
           <div class="eyebrow">Payment method</div>
           <h2 id="payment-choice-title">Choose how to pay</h2>
+          <p class="muted" id="payment-choice-message">Your reservation request has been submitted. Select a payment option to continue.</p>
           <div class="method-actions">
             <button class="method-tile method-choice" id="card-payment-button" type="button" aria-controls="card-unavailable">
               <span class="method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"></rect><path d="M3.5 9h17"></path></svg></span>
@@ -204,7 +245,6 @@
         </div>
       </section>
     </div>
-    <a class="whatsapp-contact" href="https://wa.me/639064532176?text=Hello%20Cala%20Laiya%2C%20I%20need%20help%20with%20my%20stay." target="_blank" rel="noopener noreferrer" aria-label="Chat with Cala Laiya on WhatsApp" title="Chat with Cala Laiya on WhatsApp"><span class="whatsapp-contact-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M16 3.5a12.5 12.5 0 0 0-10.8 18.8L3.8 28.2l6.1-1.3A12.5 12.5 0 1 0 16 3.5Z"></path><path d="M11.6 10.5c.3-.4.7-.4 1.1-.2l1.6 1.9c.3.3.3.7.1 1.1l-.7.9c.8 1.7 2.1 2.9 3.8 3.7l.9-.7c.3-.3.8-.3 1.1-.1l1.9 1.5c.4.3.4.8.2 1.1l-.6.8c-.5.7-1.3 1-2.1.8-4.7-1.1-8.1-4.5-9.2-9.2-.2-.8.1-1.6.8-2.1l1.1-.5Z"></path></svg></span><span>Chat on WhatsApp</span></a>
     <footer>Cala Laiya Beach Resort</footer>
 
     <script>
@@ -231,7 +271,14 @@
         const guests = query.get("guests") || "Not specified";
         const rate = Number(query.get("rate"));
         const rateText = Number.isFinite(rate) && rate > 0 ? `₱${rate.toLocaleString("en-PH")}/night` : "Not specified";
-        const staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}. Reservation status: request submitted; awaiting resort availability and reservation review.`;
+        const stayNights = (() => {
+          const start = Date.parse(`${checkIn}T00:00:00Z`);
+          const end = Date.parse(`${checkOut}T00:00:00Z`);
+          return Number.isFinite(start) && Number.isFinite(end) && end > start ? Math.round((end - start) / 86400000) : 0;
+        })();
+        const stayTotal = stayNights && Number.isFinite(rate) && rate > 0 ? stayNights * rate : 0;
+        const moneyText = (amount) => `₱${amount.toLocaleString("en-PH", { maximumFractionDigits: 2 })}`;
+        let staySummary = `Room: ${roomName}; check-in: ${checkIn}; check-out: ${checkOut}; guests: ${guests}; listed rate: ${rateText}; nights: ${stayNights || "Not calculated"}; estimated total: ${stayTotal ? moneyText(stayTotal) : "Not calculated"}.`;
         document.getElementById("booking-reference").value = requestReference;
         document.getElementById("summary-reference").textContent = requestReference;
         document.getElementById("summary-room").textContent = roomName;
@@ -255,8 +302,9 @@
         const availabilityButton = document.getElementById("check-availability");
         const availabilityResult = document.getElementById("availability-result");
         const guestDetailsPanel = document.getElementById("guest-details-panel");
-        const proofStep = document.getElementById("proof-step");
+        const bookingReview = document.getElementById("booking-review");
         const paymentOptions = document.getElementById("payment-options");
+        const proofStep = document.getElementById("proof-step");
         const cardUnavailable = document.getElementById("card-unavailable");
         const bankTransferPanel = document.getElementById("bank-transfer-panel");
         const receiptModal = document.getElementById("receipt-modal");
@@ -315,7 +363,6 @@
               guests,
             });
             if (!result.available) throw new Error(result.message || "This room is not available for the selected dates.");
-            availabilityResult.querySelector("p").textContent = result.message || "Available for your selected dates.";
             availabilityResult.hidden = false;
             guestDetailsPanel.hidden = false;
             availabilityButton.setAttribute("aria-expanded", "true");
@@ -335,16 +382,43 @@
           staySummary,
           consent: document.getElementById("booking-consent").checked,
         });
-        bookingForm.addEventListener("submit", async (event) => {
+        const showBookingReview = () => {
+          const guest = detailsPayload();
+          document.getElementById("review-name").textContent = guest.name;
+          document.getElementById("review-email").textContent = guest.email;
+          document.getElementById("review-phone").textContent = guest.phone;
+          document.getElementById("review-reference").textContent = guest.bookingReference;
+          document.getElementById("review-room").textContent = roomName;
+          document.getElementById("review-dates").textContent = `${formatStayDate(checkIn)} – ${formatStayDate(checkOut)}`;
+          document.getElementById("review-guests").textContent = guests;
+          document.getElementById("review-rate").textContent = rateText;
+          document.getElementById("review-nights").textContent = stayNights ? `${stayNights} ${stayNights === 1 ? "night" : "nights"}` : "Not calculated";
+          document.getElementById("review-total").textContent = stayTotal ? moneyText(stayTotal) : "Not available";
+          bookingStatus.textContent = "";
+          guestDetailsPanel.hidden = true;
+          bookingReview.hidden = false;
+          bookingReview.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        const bookingStatus = document.getElementById("booking-status");
+        bookingForm.addEventListener("submit", (event) => {
           event.preventDefault();
           if (!bookingForm.reportValidity()) return;
-          const button = document.getElementById("booking-submit");
+          showBookingReview();
+        });
+        document.getElementById("edit-booking").addEventListener("click", () => {
+          bookingReview.hidden = true;
+          guestDetailsPanel.hidden = false;
+          guestDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        document.getElementById("confirm-booking").addEventListener("click", async (event) => {
+          const button = event.currentTarget;
           button.disabled = true;
-          setStatus("booking-status", "Sending your reservation request to the resort…");
+          setStatus("review-status", "Submitting your reservation request…");
           try {
             const guest = detailsPayload();
-            await postApi("/api/reserve", {
+            const result = await postApi("/api/reserve", {
               ...guest,
+              staySummary,
               roomId: query.get("roomId") || "",
               roomName,
               checkIn,
@@ -352,21 +426,28 @@
               guests,
               consent: true,
             });
-            setStatus("booking-status", "Reservation request submitted. Please wait for the resort’s final confirmation before making a payment.");
-            openReceipt("booking");
+            setStatus("review-status", result.notificationSent === false
+              ? "Your request was recorded, but the resort email could not be sent. Please contact the resort with your reference."
+              : "Your reservation request was submitted. Please wait for the resort’s final confirmation.");
             paymentOptions.hidden = false;
-            paymentOptions.scrollIntoView({ behavior: "smooth", block: "start" });
+            document.getElementById("payment-choice-message").textContent = result.notificationSent === false
+              ? `Request ${guest.bookingReference} was recorded, but the resort notification could not be sent. You may choose a payment option, but contact the resort to confirm your request. `
+              : `Request ${guest.bookingReference} was submitted. Please wait for the resort to confirm availability before completing payment.`;
+            paymentOptions.scrollIntoView({ behavior: "smooth", block: "center" });
+            document.getElementById("card-payment-button").focus();
           } catch (error) {
-            setStatus("booking-status", error.message, true);
+            setStatus("review-status", error.message, true);
           } finally {
             button.disabled = false;
           }
         });
         document.getElementById("card-payment-button").addEventListener("click", () => {
+          paymentOptions.hidden = true;
           cardUnavailable.hidden = false;
           cardUnavailable.scrollIntoView({ behavior: "smooth", block: "center" });
         });
         const showBankTransfer = () => {
+          paymentOptions.hidden = true;
           cardUnavailable.hidden = true;
           bankTransferPanel.hidden = false;
           proofStep.hidden = false;
