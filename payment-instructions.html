@@ -73,8 +73,6 @@
       .step-row p { margin: 0; color: #7a807c; font-size: 11px; line-height: 1.55; }
       .stay-note { margin-top: 21px; padding: 15px 16px; background: #f8f5ef; color: #727975; font-size: 11px; line-height: 1.65; }
       footer { padding: 0 20px 34px; color: #777c79; text-align: center; font-size: 11px; }
-      .whatsapp { position: fixed; bottom: 22px; left: 21px; z-index: 40; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: #20c878; color: #fff; box-shadow: 0 3px 10px #0002; }
-      .whatsapp svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; }
       @media (max-width: 980px) { .site-header { gap: 15px; } .main-nav { gap: 14px; } .main-nav a { font-size: 10px; letter-spacing: .1em; } .brand { flex-basis: 95px; } .brand img { width: 88px; } .header-book { padding: 0 16px; } .layout { width: min(760px, calc(100% - 40px)); grid-template-columns: 1fr; gap: 22px; margin-top: 30px; } .stay-panel { position: static; } }
       @media (max-width: 700px) { body { padding-top: 102px; } .site-header { height: 102px; padding: 10px 17px 0; align-content: center; flex-wrap: wrap; gap: 0 12px; } .brand { flex: 1 1 auto; height: 43px; } .brand img { width: 94px; } .header-book { height: 36px; min-height: 36px; } .main-nav { order: 3; width: 100%; height: 44px; overflow-x: auto; justify-content: flex-start; gap: 23px; scrollbar-width: none; } .main-nav::-webkit-scrollbar { display: none; } .main-nav a { flex: 0 0 auto; font-size: 9px; } .layout { width: min(650px, calc(100% - 28px)); margin: 20px auto 42px; } .panel, .stay-panel { padding: 22px 19px; } .form-grid { grid-template-columns: 1fr; } .row { grid-template-columns: 80px minmax(0, 1fr); gap: 8px; min-height: 55px; } .label { font-size: 9px; letter-spacing: .14em; } .value { font-size: 13px; } }
     </style>
@@ -98,7 +96,7 @@
           <p class="stay-date-line">Selected dates: <strong id="availability-dates">Not specified</strong></p>
           <button class="submit" id="check-availability" type="button" aria-expanded="false" aria-controls="availability-result guest-details-panel">CHECK AVAILABILITY</button>
           <div class="availability-result" id="availability-result" role="status" aria-live="polite" hidden>
-            <p>Available for your selected dates. Kindly <a href="https://wa.me/6309512472881" target="_blank" rel="noopener">message our support</a> if you have any question.</p>
+            <p>Available for your selected dates. If you have any questions, email <a href="mailto:reservations@calalaiyabeach-resort.com">reservations@calalaiyabeach-resort.com</a>.</p>
           </div>
           <div class="status" id="availability-status" role="status" aria-live="polite"></div>
         </section>
@@ -154,7 +152,7 @@
               <button class="submit" type="submit" id="proof-submit">SEND PAYMENT PROOF</button>
               <div class="status" id="proof-status" role="status" aria-live="polite"></div>
             </form>
-            <p class="availability-caveat">If Formspree rejects the file upload, your current plan does not permit uploads. The resort can enable uploads on a supported plan or provide a WhatsApp receipt channel.</p>
+            <p class="availability-caveat">Your payment proof will be sent to <a href="mailto:aman@amanpulo.chat">aman@amanpulo.chat</a>. If the upload fails, please email the receipt to that address with your request reference.</p>
           </div>
         </section>
       </div>
@@ -171,11 +169,12 @@
       </aside>
     </main>
     <footer>Cala Laiya Beach Resort</footer>
-    <a class="whatsapp" href="https://wa.me/6309512472881" target="_blank" rel="noopener" aria-label="Contact Cala Laiya on WhatsApp"><svg viewBox="0 0 24 24"><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L4 20l1.1-4a8.2 8.2 0 1 1 15.1-4.3Z"></path><path d="M9 8.5c.3-.5.5-.5.8-.5h.4c.2 0 .4.1.5.4l.8 1.8c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4-.1.6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6-.1l.8-.9c.2-.2.4-.3.7-.2l1.7.8c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.7-.5.5-1.2.7-1.9.6-1.1-.2-2.5-.8-4.1-2.2-1.3-1.2-2.2-2.7-2.5-3.7-.3-1.1.1-1.9.5-2.3Z"></path></svg></a>
+
     <script>
       (() => {
         const details = window.CALA_PAYMENT_DETAILS || {};
         const formEndpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
+        const paymentProofRecipient = String(window.CALA_PAYMENT_PROOF_EMAIL || "aman@amanpulo.chat").trim();
         const query = new URLSearchParams(window.location.search);
         const requestRefKey = `calaManualRequestReference:${query.toString()}`;
         let requestReference;
@@ -314,6 +313,9 @@
           setStatus("proof-status", "Sending payment proof to the resort…");
           try {
             const submission = makeSubmission("Payment proof upload", `Payment proof upload — ${requestReference}`);
+            submission.set("_to", paymentProofRecipient);
+            submission.set("_replyto", document.getElementById("guest-email").value.trim());
+            submission.set("recipientEmail", paymentProofRecipient);
             submission.set("proofConsent", document.getElementById("proof-consent").checked ? "Yes" : "No");
             submission.append("paymentProof", file, file.name);
             await postToFormspree(submission);
