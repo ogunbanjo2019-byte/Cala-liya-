@@ -2623,3 +2623,37 @@ main {
   }
 }
 .offer-badge { display: inline-flex; align-items: center; margin: 0 0 8px; padding: 6px 10px; background: #b8443e; color: #fff; font-size: 9px; font-weight: 800; letter-spacing: .12em; line-height: 1; text-transform: uppercase; } 
+  
+/* Sitewide WhatsApp contact shortcut */
+.whatsapp-float {
+  position: fixed;
+  z-index: 1000;
+  right: 22px;
+  bottom: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 9px 18px 9px 10px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  background: #128c54;
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(16,58,41,.28);
+  font: 600 14px/1.2 Arial, sans-serif;
+  text-decoration: none;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.whatsapp-float:hover, .whatsapp-float:focus-visible {
+  transform: translateY(-3px);
+  background: #0b7544;
+  box-shadow: 0 12px 32px rgba(16,58,41,.36);
+}
+.whatsapp-float:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.whatsapp-float svg { width: 37px; height: 37px; flex: 0 0 37px; fill: #fff; }
+.whatsapp-float span { display: grid; gap: 3px; }
+.whatsapp-float b { font-size: 12px; font-weight: 500; opacity: .92; }
+@media (max-width: 520px) {
+  .whatsapp-float { right: 14px; bottom: 14px; min-height: 52px; padding: 7px 13px 7px 8px; font-size: 13px; }
+  .whatsapp-float svg { width: 35px; height: 35px; flex-basis: 35px; }
+}
