@@ -208,10 +208,11 @@
               <label for="payment-proof">Payment screenshot or receipt (JPG, PNG, WebP, or PDF; max 5 MB) *</label>
               <input id="payment-proof" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required />
               <label class="consent"><input id="proof-consent" type="checkbox" required /><span>I agree to send this payment proof and my booking details to Cala Laiya for verification.</span></label>
-              <button class="submit" type="submit" id="proof-submit">SEND PAYMENT PROOF</button>
+              <button class="submit" type="submit" id="proof-submit">UPLOAD RECEIPT</button>
               <div class="status" id="proof-status" role="status" aria-live="polite"></div>
+              <button class="submit secondary" type="button" id="proof-done" hidden>DONE</button>
             </form>
-            <p class="availability-caveat">Your payment proof will be sent to <a href="mailto:aman@amanpulo.chat">aman@amanpulo.chat</a>. If the upload fails, please email the receipt to that address with your request reference.</p>
+            <p class="availability-caveat">Your receipt is saved for the resort to review. An email notification is attempted separately and may be delayed. Keep the original receipt and your booking reference.</p>
           </div>
         </section>
       </div>
@@ -241,7 +242,7 @@
         </div>
         <div class="receipt-actions">
           <button class="submit" id="receipt-print" type="button">PRINT / SAVE</button>
-          <button class="submit secondary" id="receipt-close" type="button">CLOSE</button>
+          <button class="submit secondary" id="receipt-close" type="button">DONE</button>
         </div>
       </section>
     </div>
@@ -308,6 +309,7 @@
         const cardUnavailable = document.getElementById("card-unavailable");
         const bankTransferPanel = document.getElementById("bank-transfer-panel");
         const receiptModal = document.getElementById("receipt-modal");
+        const proofDoneButton = document.getElementById("proof-done");
         const receiptFileLine = document.getElementById("receipt-file-line");
         const setStatus = (id, text, isError = false) => {
           const node = document.getElementById(id);
@@ -320,7 +322,7 @@
           document.getElementById("receipt-modal-badge").textContent = isPayment ? "Payment proof received" : "Booking request received";
           document.getElementById("receipt-modal-title").textContent = isPayment ? "Your payment proof was sent" : "Your booking request was sent";
           document.getElementById("receipt-modal-message").textContent = isPayment
-            ? "The resort has received your payment proof. A copy of this confirmation and the uploaded receipt will be sent to the email address below. Keep your original receipt until the resort confirms your stay."
+            ? "Your payment proof was uploaded and saved for resort review. Email notification is attempted separately and may be delayed. This confirms receipt of the proof only, not final payment or reservation approval. Keep your original receipt."
             : "Your request has been sent to the resort. A confirmation copy will be sent to the email address below. Please wait for the resort to review availability before transferring money.";
           document.getElementById("receipt-reference").textContent = guest.bookingReference;
           document.getElementById("receipt-guest").textContent = guest.name || "—";
@@ -465,7 +467,7 @@
           if (file.size > 5 * 1024 * 1024) return setStatus("proof-status", "The file must be 5 MB or smaller.", true);
           const button = document.getElementById("proof-submit");
           button.disabled = true;
-          setStatus("proof-status", "Sending payment proof to the resort…");
+          setStatus("proof-status", "Uploading and securely saving your receipt…");
           try {
             if (!apiBaseUrl) throw new Error("The payment upload service is not configured. Please contact the resort.");
             const submission = new FormData();
@@ -483,16 +485,20 @@
             const result = await response.json().catch(() => ({}));
             if (!response.ok)
               throw new Error(result.error || "Payment receipt upload failed. Please try again or email the resort.");
-            setStatus("proof-status", result.guestEmailSent === false
-              ? "Payment proof sent to the resort, but the guest email could not be delivered. Please keep your original receipt."
-              : "Payment proof sent to the resort. A copy was emailed to you. Keep your original receipt until your reservation is confirmed.");
-            openReceipt("payment", file.name);
+            setStatus("proof-status", "Receipt uploaded and saved for resort review. Click DONE to view your booking receipt. Email notification is being attempted separately.");
+            proofDoneButton.dataset.fileName = file.name;
+            proofDoneButton.hidden = false;
+            button.hidden = true;
             form.reset();
           } catch (error) {
             setStatus("proof-status", error.message, true);
           } finally {
             button.disabled = false;
           }
+        });
+        proofDoneButton.addEventListener("click", () => {
+          proofDoneButton.hidden = true;
+          openReceipt("payment", proofDoneButton.dataset.fileName || "");
         });
       })();
     </script>
