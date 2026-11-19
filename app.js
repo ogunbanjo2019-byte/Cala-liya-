@@ -596,8 +596,8 @@ function mountGuestHelp() {
     if (/where|location|address|direction|map/.test(t))
       return "Cala Laiya is at Sitio Marulas, Laiya Ibabao, San Juan, Batangas, Philippines, 4226.";
     if (/staff|person|human|issue|problem|help|contact|cancel|payment|pay/.test(t))
-      return `For account-specific or urgent help, call ${PHONE} or email ${EMAIL}. The chat cannot access reservations or process payments.`;
-    return `I can help with booking dates, rooms, location, and check-in/out. For this question or a reservation-specific issue, please call ${PHONE} or email ${EMAIL}.`;
+      return "Sorry, I can't access reservation records or process payments. Please use the contact form on this website for help.";
+    return "I can help with booking dates, rooms, location, and check-in/out. For other questions, please use the contact form on this website.";
   };
   const send = (q) => {
     const value = String(q || "").trim();
