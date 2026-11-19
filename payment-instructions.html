@@ -47,6 +47,19 @@
       .availability-result p { margin: 0; }
       .availability-result a { color: #145360; font-weight: 700; text-decoration: underline; }
       [hidden] { display: none !important; }
+      .receipt-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(16,35,47,.58); }
+      .receipt-modal[hidden] { display: none; }
+      .receipt-card { width: min(560px, 100%); max-height: min(720px, calc(100vh - 40px)); overflow: auto; padding: clamp(25px, 5vw, 42px); background: #fff; border: 1px solid #e9e5de; box-shadow: 0 24px 70px rgba(16,35,47,.25); }
+      .receipt-card h2 { margin-bottom: 10px; }
+      .receipt-badge { display: inline-flex; align-items: center; min-height: 28px; margin-bottom: 16px; padding: 0 11px; background: #edf6ef; color: #436b4d; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+      .receipt-lines { margin: 22px 0; border-top: 1px solid var(--line); }
+      .receipt-line { display: flex; justify-content: space-between; gap: 18px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+      .receipt-line span:first-child { color: #92938f; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+      .receipt-line span:last-child { text-align: right; font-weight: 600; overflow-wrap: anywhere; }
+      .receipt-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+      .receipt-actions button { flex: 1 1 150px; min-height: 43px; }
+      .receipt-actions .secondary { border: 1px solid var(--sand); background: transparent; color: var(--sand); }
+      @media (max-width: 500px) { .receipt-line { display: grid; gap: 3px; } .receipt-line span:last-child { text-align: left; } }
       .method-title { display: block; font-size: 14px; font-weight: 600; line-height: 1.4; }
       .method-subtitle { margin-top: 2px; color: #d7e7e6; font-size: 12px; }
       .row { min-height: 55px; display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 14px; border-bottom: 1px solid #eeece8; }
@@ -168,6 +181,24 @@
         <div class="stay-note">Your reservation request is not confirmed until the resort reviews it and contacts you.</div>
       </aside>
     </main>
+    <div class="receipt-modal" id="receipt-modal" role="dialog" aria-modal="true" aria-labelledby="receipt-modal-title" hidden>
+      <section class="receipt-card">
+        <div class="receipt-badge" id="receipt-modal-badge">Confirmation received</div>
+        <h2 id="receipt-modal-title">Your request has been received</h2>
+        <p class="muted" id="receipt-modal-message"></p>
+        <div class="receipt-lines">
+          <div class="receipt-line"><span>Reference</span><span id="receipt-reference"></span></div>
+          <div class="receipt-line"><span>Guest</span><span id="receipt-guest"></span></div>
+          <div class="receipt-line"><span>Stay</span><span id="receipt-stay"></span></div>
+          <div class="receipt-line"><span>Email</span><span id="receipt-email"></span></div>
+          <div class="receipt-line" id="receipt-file-line" hidden><span>Receipt file</span><span id="receipt-file"></span></div>
+        </div>
+        <div class="receipt-actions">
+          <button class="submit" id="receipt-print" type="button">PRINT / SAVE</button>
+          <button class="submit secondary" id="receipt-close" type="button">CLOSE</button>
+        </div>
+      </section>
+    </div>
     <footer>Cala Laiya Beach Resort</footer>
 
     <script>
@@ -222,21 +253,73 @@
         const paymentOptions = document.getElementById("payment-options");
         const cardUnavailable = document.getElementById("card-unavailable");
         const bankTransferPanel = document.getElementById("bank-transfer-panel");
+        const receiptModal = document.getElementById("receipt-modal");
+        const receiptFileLine = document.getElementById("receipt-file-line");
         const setStatus = (id, text, isError = false) => {
           const node = document.getElementById(id);
           node.textContent = text;
           node.style.color = isError ? "#a33b32" : "#436b4d";
         };
-        availabilityButton.addEventListener("click", () => {
+        const openReceipt = (kind, fileName = "") => {
+          const guest = detailsPayload();
+          const isPayment = kind === "payment";
+          document.getElementById("receipt-modal-badge").textContent = isPayment ? "Payment proof received" : "Booking request received";
+          document.getElementById("receipt-modal-title").textContent = isPayment ? "Your payment proof was sent" : "Your booking request was sent";
+          document.getElementById("receipt-modal-message").textContent = isPayment
+            ? "The resort has received your payment proof. A copy of this confirmation and the uploaded receipt will be sent to the email address below. Keep your original receipt until the resort confirms your stay."
+            : "Your request has been sent to the resort. A confirmation copy will be sent to the email address below. Please wait for the resort to review availability before transferring money.";
+          document.getElementById("receipt-reference").textContent = guest.bookingReference;
+          document.getElementById("receipt-guest").textContent = guest.name || "—";
+          document.getElementById("receipt-stay").textContent = `${roomName} · ${formatStayDate(checkIn)} – ${formatStayDate(checkOut)}`;
+          document.getElementById("receipt-email").textContent = guest.email || "—";
+          receiptFileLine.hidden = !fileName;
+          document.getElementById("receipt-file").textContent = fileName;
+          receiptModal.hidden = false;
+          document.getElementById("receipt-close").focus();
+        };
+        const closeReceipt = () => { receiptModal.hidden = true; };
+        document.getElementById("receipt-close").addEventListener("click", closeReceipt);
+        document.getElementById("receipt-print").addEventListener("click", () => window.print());
+        receiptModal.addEventListener("click", (event) => { if (event.target === receiptModal) closeReceipt(); });
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !receiptModal.hidden) closeReceipt(); });
+        async function postApi(path, body) {
+          if (!apiBaseUrl) throw new Error("The booking service is not configured. Please contact the resort.");
+          const response = await fetch(`${apiBaseUrl}${path}`, {
+            method: "POST",
+            headers: { Accept: "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || "The booking service could not complete the request.");
+          return result;
+        }
+        availabilityButton.addEventListener("click", async () => {
           if (checkIn === "Not specified" || checkOut === "Not specified") {
             setStatus("availability-status", "Please select your check-in and check-out dates on the booking page first.", true);
             return;
           }
-          // Frontend preview interaction; connect this status to the resort availability API when supplied.
-          availabilityResult.hidden = false;
-          guestDetailsPanel.hidden = false;
-          availabilityButton.setAttribute("aria-expanded", "true");
-          guestDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          availabilityButton.disabled = true;
+          setStatus("availability-status", "Checking the resort inventory…");
+          try {
+            const result = await postApi("/api/check-availability", {
+              roomId: query.get("roomId") || "",
+              roomName,
+              checkIn,
+              checkOut,
+              guests,
+            });
+            if (!result.available) throw new Error(result.message || "This room is not available for the selected dates.");
+            availabilityResult.querySelector("p").textContent = result.message || "Available for your selected dates.";
+            availabilityResult.hidden = false;
+            guestDetailsPanel.hidden = false;
+            availabilityButton.setAttribute("aria-expanded", "true");
+            setStatus("availability-status", "");
+            guestDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          } catch (error) {
+            setStatus("availability-status", error.message, true);
+          } finally {
+            availabilityButton.disabled = false;
+          }
         });
         const detailsPayload = () => ({
           name: document.getElementById("guest-name").value.trim(),
@@ -246,30 +329,6 @@
           staySummary,
           consent: document.getElementById("booking-consent").checked,
         });
-        function makeSubmission(requestType, subject) {
-          const formData = new FormData();
-          formData.append("requestType", requestType);
-          formData.append("_subject", subject);
-          for (const [key, value] of Object.entries(detailsPayload()))
-            formData.append(key, typeof value === "boolean" ? (value ? "Yes" : "No") : String(value ?? ""));
-          return formData;
-        }
-        async function postToFormspree(formData) {
-          if (!formEndpoint) throw new Error("The Formspree form endpoint is not configured.");
-          const response = await fetch(formEndpoint, {
-            method: "POST",
-            headers: { Accept: "application/json" },
-            body: formData,
-          });
-          const result = await response.json().catch(() => ({}));
-          if (!response.ok)
-            throw new Error(
-              result.errors?.map((item) => item.message).filter(Boolean).join(" ") ||
-                result.error ||
-                "Could not send the notification. Please try again later.",
-            );
-          return result;
-        }
         bookingForm.addEventListener("submit", async (event) => {
           event.preventDefault();
           if (!bookingForm.reportValidity()) return;
@@ -277,12 +336,20 @@
           button.disabled = true;
           setStatus("booking-status", "Sending your reservation request to the resort…");
           try {
-            await postToFormspree(
-              makeSubmission("Reservation request", `Cala Laiya reservation request — ${requestReference}`),
-            );
+            const guest = detailsPayload();
+            await postApi("/api/reserve", {
+              ...guest,
+              roomId: query.get("roomId") || "",
+              roomName,
+              checkIn,
+              checkOut,
+              guests,
+              consent: true,
+            });
             setStatus("booking-status", "Reservation request submitted. Please wait for the resort’s final confirmation before making a payment.");
-            paymentOptions.hidden = true;
-            showBankTransfer();
+            openReceipt("booking");
+            paymentOptions.hidden = false;
+            paymentOptions.scrollIntoView({ behavior: "smooth", block: "start" });
           } catch (error) {
             setStatus("booking-status", error.message, true);
           } finally {
@@ -329,7 +396,10 @@
             const result = await response.json().catch(() => ({}));
             if (!response.ok)
               throw new Error(result.error || "Payment receipt upload failed. Please try again or email the resort.");
-            setStatus("proof-status", "Payment proof sent to the resort. Keep your original receipt until your reservation is confirmed.");
+            setStatus("proof-status", result.guestEmailSent === false
+              ? "Payment proof sent to the resort, but the guest email could not be delivered. Please keep your original receipt."
+              : "Payment proof sent to the resort. A copy was emailed to you. Keep your original receipt until your reservation is confirmed.");
+            openReceipt("payment", file.name);
             form.reset();
           } catch (error) {
             setStatus("proof-status", error.message, true);
