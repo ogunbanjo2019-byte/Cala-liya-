@@ -23,8 +23,8 @@ const rooms = [
     price: 5000,
     beds: "1 Queen Bed",
     capacity: 2,
-    image: CLOUD("1779508896", "garden-casita-1"),
-    photos: [CLOUD("1779508896", "garden-casita-1"), CLOUD("1779508899", "garden-casita-2")],
+    image: "/assets/images/castina-garden-casita-1.jpeg",
+    photos: ["/assets/images/castina-garden-casita-1.jpeg", "/assets/images/castina-garden-casita-2.jpeg"],
   },
   {
     name: "Garden Casita Premier",
@@ -34,8 +34,8 @@ const rooms = [
     price: 8000,
     beds: "2 Queen Beds",
     capacity: 4,
-    image: CLOUD("1779508907", "gcp-1"),
-    photos: [CLOUD("1779508907", "gcp-1"), CLOUD("1779508910", "gcp-2"), CLOUD("1779508911", "gcp-3")],
+    image: "/assets/images/castina-garden-casita-premier-1.jpeg",
+    photos: ["/assets/images/castina-garden-casita-premier-1.jpeg", "/assets/images/castina-garden-casita-premier-2.jpeg", "/assets/images/castina-garden-casita-premier-3.jpeg", "/assets/images/castina-garden-casita-premier-4.jpeg", "/assets/images/castina-garden-casita-premier-5.jpeg"],
   },
   {
     name: "Two-Bedroom Casita",
@@ -45,8 +45,8 @@ const rooms = [
     price: 10000,
     beds: "2 Queen Beds and 2 Single Beds",
     capacity: 6,
-    image: CLOUD("1779508924", "2bc-3"),
-    photos: [CLOUD("1779508924", "2bc-3")],
+    image: "/assets/images/castina-two-bedroom-casita-1.jpeg",
+    photos: ["/assets/images/castina-two-bedroom-casita-1.jpeg", "/assets/images/castina-two-bedroom-casita-2.jpeg", "/assets/images/castina-two-bedroom-casita-3.jpeg", "/assets/images/castina-two-bedroom-casita-4.jpeg", "/assets/images/castina-two-bedroom-casita-5.jpeg"],
   },
   {
     name: "Three-Bedroom Casita",
