@@ -1,4 +1,3 @@
-
 window.CALA_PAYMENT_DETAILS = {
   bank: "Land Bank",
   accountName: "Cala Laiya",
