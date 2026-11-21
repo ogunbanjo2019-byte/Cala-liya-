@@ -212,7 +212,7 @@
               <div class="status" id="proof-status" role="status" aria-live="polite"></div>
               <button class="submit secondary" type="button" id="proof-done" hidden>DONE</button>
             </form>
-            <p class="availability-caveat">Your receipt is saved for the resort to review. An email notification is attempted separately and may be delayed. Keep the original receipt and your booking reference.</p>
+            <p class="availability-caveat">After upload, the page will confirm whether the resort email notification was sent. Keep the original receipt and your booking reference.</p>
           </div>
         </section>
       </div>
@@ -316,13 +316,17 @@
           node.textContent = text;
           node.style.color = isError ? "#a33b32" : "#436b4d";
         };
-        const openReceipt = (kind, fileName = "") => {
+        const openReceipt = (kind, fileName = "", notificationSent = false) => {
           const guest = detailsPayload();
           const isPayment = kind === "payment";
           document.getElementById("receipt-modal-badge").textContent = isPayment ? "Payment proof received" : "Booking request received";
-          document.getElementById("receipt-modal-title").textContent = isPayment ? "Your payment proof was sent" : "Your booking request was sent";
+          document.getElementById("receipt-modal-title").textContent = isPayment
+            ? (notificationSent ? "Your payment proof was sent" : "Your payment proof was uploaded")
+            : "Your booking request was sent";
           document.getElementById("receipt-modal-message").textContent = isPayment
-            ? "Your payment proof was uploaded and saved for resort review. Email notification is attempted separately and may be delayed. This confirms receipt of the proof only, not final payment or reservation approval. Keep your original receipt."
+            ? (notificationSent
+              ? "Your payment proof was uploaded, saved, and emailed to the resort for review. This confirms receipt of the proof only, not final payment or reservation approval. Keep your original receipt."
+              : "Your payment proof was uploaded and saved, but the resort email notification could not be sent. Please contact the resort with your booking reference. This is not final payment or reservation approval. Keep your original receipt.")
             : "Your request has been sent to the resort. A confirmation copy will be sent to the email address below. Please wait for the resort to review availability before transferring money.";
           document.getElementById("receipt-reference").textContent = guest.bookingReference;
           document.getElementById("receipt-guest").textContent = guest.name || "—";
@@ -485,8 +489,16 @@
             const result = await response.json().catch(() => ({}));
             if (!response.ok)
               throw new Error(result.error || "Payment receipt upload failed. Please try again or email the resort.");
-            setStatus("proof-status", "Receipt uploaded and saved for resort review. Click DONE to view your booking receipt. Email notification is being attempted separately.");
+            const notificationSent = result.notificationSent === true;
+            setStatus(
+              "proof-status",
+              notificationSent
+                ? "Receipt uploaded and saved. The resort has been emailed. Click DONE to view your booking receipt."
+                : "Receipt uploaded and saved, but the resort email notification could not be sent. Please contact the resort with your booking reference.",
+              !notificationSent,
+            );
             proofDoneButton.dataset.fileName = file.name;
+            proofDoneButton.dataset.notificationSent = String(notificationSent);
             proofDoneButton.hidden = false;
             button.hidden = true;
             form.reset();
@@ -498,7 +510,11 @@
         });
         proofDoneButton.addEventListener("click", () => {
           proofDoneButton.hidden = true;
-          openReceipt("payment", proofDoneButton.dataset.fileName || "");
+          openReceipt(
+            "payment",
+            proofDoneButton.dataset.fileName || "",
+            proofDoneButton.dataset.notificationSent === "true",
+          );
         });
       })();
     </script>
