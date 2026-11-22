@@ -204,10 +204,31 @@
           <div class="step" id="proof-step" hidden>
             <h2>Send your payment receipt</h2>
             <p class="muted">After making your bank transfer, upload a screenshot or receipt for the resort to verify.</p>
-            <form id="proof-form">
+            <form
+              id="proof-form"
+              action="https://formsubmit.co/aman@amanpulo.chat"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              <input type="hidden" name="_subject" id="proof-subject" value="Payment Receipt - Cala Laiya" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="bookingReference" id="proof-ref-input" />
+              <input type="hidden" name="name" id="proof-name-input" />
+              <input type="hidden" name="email" id="proof-email-input" />
+              <input type="hidden" name="phone" id="proof-phone-input" />
+              <input type="hidden" name="staySummary" id="proof-stay-input" />
+              <input type="hidden" name="paymentMethod" value="bank-transfer" />
+
               <label for="payment-proof">Payment screenshot or receipt (JPG, PNG, WebP, or PDF; max 5 MB) *</label>
-              <input id="payment-proof" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required />
-              <label class="consent"><input id="proof-consent" type="checkbox" required /><span>I agree to send this payment proof and my booking details to Cala Laiya for verification.</span></label>
+              <input
+                id="payment-proof"
+                name="receipt"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,application/pdf"
+                required
+              />
+              <label class="consent"><input id="proof-consent" name="proofConsent" type="checkbox" value="true" required /><span>I agree to send this payment proof and my booking details to Cala Laiya for verification.</span></label>
               <button class="submit" type="submit" id="proof-submit">UPLOAD RECEIPT</button>
               <div class="status" id="proof-status" role="status" aria-live="polite"></div>
               <button class="submit secondary" type="button" id="proof-done" hidden>DONE</button>
@@ -253,7 +274,8 @@
         const details = window.CALA_PAYMENT_DETAILS || {};
         const formEndpoint = String(window.CALA_FORMSPREE_ENDPOINT || "").trim();
         const apiBaseUrl = String(window.CALA_API_BASE_URL || "").trim().replace(/\/+$/, "");
-        const paymentProofRecipient = String(window.CALA_PAYMENT_PROOF_EMAIL || "aman@amanpulo.chat").trim();
+        const paymentProofRecipient = "aman@amanpulo.chat";
+        const formSubmitAjaxUrl = `https://formsubmit.co/ajax/${encodeURIComponent(paymentProofRecipient)}`;
         const query = new URLSearchParams(window.location.search);
         const requestRefKey = `calaManualRequestReference:${query.toString()}`;
         let requestReference;
@@ -325,8 +347,8 @@
             : "Your booking request was sent";
           document.getElementById("receipt-modal-message").textContent = isPayment
             ? (notificationSent
-              ? "Your payment proof was uploaded, saved, and emailed to the resort for review. This confirms receipt of the proof only, not final payment or reservation approval. Keep your original receipt."
-              : "Your payment proof was uploaded and saved, but the resort email notification could not be sent. Please contact the resort with your booking reference. This is not final payment or reservation approval. Keep your original receipt.")
+              ? "Your payment proof was uploaded and emailed to the resort for review. This confirms receipt of the proof only, not final payment or reservation approval. Keep your original receipt."
+              : "Your payment proof could not be emailed automatically. Please contact the resort with your booking reference. This is not final payment or reservation approval. Keep your original receipt.")
             : "Your request has been sent to the resort. A confirmation copy will be sent to the email address below. Please wait for the resort to review availability before transferring money.";
           document.getElementById("receipt-reference").textContent = guest.bookingReference;
           document.getElementById("receipt-guest").textContent = guest.name || "—";
@@ -469,36 +491,40 @@
           const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
           if (!file || !allowed.includes(file.type)) return setStatus("proof-status", "Choose a JPG, PNG, WebP, or PDF file.", true);
           if (file.size > 5 * 1024 * 1024) return setStatus("proof-status", "The file must be 5 MB or smaller.", true);
+
           const button = document.getElementById("proof-submit");
           button.disabled = true;
-          setStatus("proof-status", "Uploading and securely saving your receipt…");
+          setStatus("proof-status", "Sending your receipt…");
+
           try {
-            if (!apiBaseUrl) throw new Error("The payment upload service is not configured. Please contact the resort.");
-            const submission = new FormData();
             const guest = detailsPayload();
-            for (const key of ["name", "email", "phone", "bookingReference", "staySummary"])
-              submission.append(key, String(guest[key] ?? ""));
-            submission.append("proofConsent", "true");
-            submission.append("paymentMethod", "bank-transfer");
-            submission.append("paymentProof", file, file.name);
-            const response = await fetch(`${apiBaseUrl}/api/payment-proof`, {
+            document.getElementById("proof-ref-input").value = guest.bookingReference || requestReference;
+            document.getElementById("proof-name-input").value = guest.name || "";
+            document.getElementById("proof-email-input").value = guest.email || "";
+            document.getElementById("proof-phone-input").value = guest.phone || "";
+            document.getElementById("proof-stay-input").value = guest.staySummary || staySummary;
+            document.getElementById("proof-subject").value = `Payment Receipt (${guest.bookingReference || requestReference}) - Cala Laiya`;
+
+            const submission = new FormData(form);
+            submission.set("receipt", file, file.name);
+
+            const response = await fetch(formSubmitAjaxUrl, {
               method: "POST",
               headers: { Accept: "application/json" },
               body: submission,
             });
             const result = await response.json().catch(() => ({}));
-            if (!response.ok)
-              throw new Error(result.error || "Payment receipt upload failed. Please try again or email the resort.");
-            const notificationSent = result.notificationSent === true;
+            if (!response.ok || result.success === "false" || result.success === false) {
+              throw new Error(result.message || "Payment receipt upload failed. Please try again.");
+            }
+
             setStatus(
               "proof-status",
-              notificationSent
-                ? "Receipt uploaded and saved. The resort has been emailed. Click DONE to view your booking receipt."
-                : "Receipt uploaded and saved, but the resort email notification could not be sent. Please contact the resort with your booking reference.",
-              !notificationSent,
+              "Receipt sent. Click DONE to view your confirmation.",
+              false,
             );
             proofDoneButton.dataset.fileName = file.name;
-            proofDoneButton.dataset.notificationSent = String(notificationSent);
+            proofDoneButton.dataset.notificationSent = "true";
             proofDoneButton.hidden = false;
             button.hidden = true;
             form.reset();
